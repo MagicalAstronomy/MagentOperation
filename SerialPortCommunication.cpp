@@ -4,6 +4,7 @@
 SerialPortCommunication::SerialPortCommunication(QObject *parent)
 	: QObject(parent)
 {
+	modbusObj = new QModbusRtuSerialMaster(this);
 
 }
 
@@ -30,13 +31,65 @@ QList<QSerialPortInfo> SerialPortCommunication::showSerialPorts()
 
 }
 
-void SerialPortCommunication::openSerialPort()
+int SerialPortCommunication::modbusState()	//打开返回1，没打开返回0
 {
+	if (modbusObj->state() != QModbusDevice::ConnectedState)	//当前串口未打开
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
+}
+
+
+int SerialPortCommunication::changeModbus(QString portname)	//打开串口。至少需要给出串口名，成功返回1，失败返回0
+{
+
+	if (!modbusObj)return 0;
+
+	if (modbusObj->state() != QModbusDevice::ConnectedState)	//当前串口未打开
+	{
+		//设置串口相关参数
+		modbusObj->setConnectionParameter(QModbusDevice::SerialPortNameParameter, portname);	//设置串口名称
+		modbusObj->setConnectionParameter(QModbusDevice::SerialParityParameter, QSerialPort::EvenParity);		//设置偶校验
+		modbusObj->setConnectionParameter(QModbusDevice::SerialBaudRateParameter, QSerialPort::Baud115200);		//设置波特率
+		modbusObj->setConnectionParameter(QModbusDevice::SerialStopBitsParameter, QSerialPort::OneStop);		//设置一位停止位
+		modbusObj->setConnectionParameter(QModbusDevice::SerialDataBitsParameter, QSerialPort::Data8);		//设置八位数据位
+
+		modbusObj->setTimeout(1000);	//设置从机回复的超时时间
+		modbusObj->setNumberOfRetries(2);	//设置重复发送次数
+
+		if (!modbusObj->connectDevice())
+		{
+			qDebug("串口打开失败");
+			return 0;
+		}
+		else
+		{
+			qDebug("串口已打开");
+			return 1;
+		}
+
+	}
+	else
+	{
+		//断开连接函数返回void，似乎是一定能断开成功的
+		modbusObj->disconnectDevice();
+		qDebug("串口已关闭");
+		return 1;
+		
+	}
+
 
 }
 
-void SerialPortCommunication::closeSerialPort()
+int SerialPortCommunication::readControlMode()
 {
-
+	return 1;
 }
+
+
+
 

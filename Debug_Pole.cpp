@@ -14,6 +14,10 @@ Debug_Pole::Debug_Pole(QWidget *parent)
 	connect(spRefreshTimer, SIGNAL(timeout()), this, SLOT(ontimeout()));
 
 	spRefreshTimer->start();
+
+
+	connect(ui.openCom, SIGNAL(clicked()), this, SLOT(changeCom()));
+
 	
 	//list = serialportcommunication->showSerialPorts();
 
@@ -26,7 +30,7 @@ Debug_Pole::~Debug_Pole()
 
 void Debug_Pole::ontimeout()
 {
-	if(g_spStatus == 0)	//只有串口未打开时才进行刷新
+	if(!serialportcommunication->modbusState())	//只有串口未打开时才进行刷新
 	{ 
 		listCache = serialportcommunication->showSerialPorts();
 		if (list.size() != listCache.size())	//直接比较两个qlist不成功，似乎因为qlist中存储的qserialportinfo变量没有重载过=
@@ -45,4 +49,25 @@ void Debug_Pole::ontimeout()
 			
 		}
 	}
+}
+
+
+void Debug_Pole::changeCom()
+{
+	serialportcommunication->changeModbus(ui.portList->currentText());
+	if (serialportcommunication->modbusState())
+	{
+
+		ui.portList->setDisabled(true);
+		ui.openCom->setText(tr("关闭串口"));
+	}
+
+	else
+	{
+
+		ui.portList->setEnabled(true);
+		ui.openCom->setText(tr("打开串口"));
+	}
+
+
 }
