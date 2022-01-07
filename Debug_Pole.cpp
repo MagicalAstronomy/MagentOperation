@@ -77,8 +77,9 @@ void Debug_Pole::changeCom()
 void Debug_Pole::inputCurrent()
 {
 	//测试读取数据是否成功时借用此按钮实现
-	serialportcommunication->readControlMode();
-
+	//已成功
+	//serialportcommunication->readControlMode();
+	serialportcommunication->writeCurrent(2, 0x02);
 
 
 }

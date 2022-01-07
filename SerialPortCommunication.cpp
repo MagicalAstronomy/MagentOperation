@@ -148,6 +148,49 @@ void SerialPortCommunication::readReady()
 	reply->deleteLater();
 }
 
+void SerialPortCommunication::writeCurrent(float value, int channel)
+{
+	if((!modbusObj) || ((value*100 - floor(value*100)) >0) || (abs(value * 100) >2000) )	//由于这里正常情况下一定等于0，因此可以对浮点判断用>0，其他情况下最好用1e-5
+	{ 
+		qDebug("串口尚未打开，或输入电流精度在小数点后三位以上，或输入电流过大！");
+		return;
+	}
+
+	QModbusDataUnit writeUnit(QModbusDataUnit::HoldingRegisters, 0x0040, 1);
+	writeUnit.setValue(0, floor(value*100));	//传输数据的index为0，向下取整确保输入是-2000~2000数
+
+	if (auto* reply = modbusObj->sendWriteRequest(writeUnit, channel))
+	{
+		if (!reply->isFinished())
+		{
+			connect(reply, &QModbusReply::finished, this, [this, reply]()
+				{
+					if (reply->error() == QModbusDevice::ProtocolError)
+					{
+						qDebug("写入数据有协议错误");
+					}
+					else if (reply->error() != QModbusDevice::NoError)
+					{
+						qDebug("写入协议有其他错误");
+					}
+					else
+					{
+						qDebug("写入电流值成功！");
+					}
+				});
+		}
+		else
+		{
+			reply->deleteLater();	//发送多次后没有响应停止发送
+		}
+	}
+	else
+	{
+		qDebug("发送数据失败");
+	}
+
+}
+
 
 
 

@@ -10,7 +10,7 @@
 #include <QModbusRtuSerialMaster>	//modbus主类
 #include <QModbusDataUnit>		//存储接收和发送数据的类
 #include <QModbusReply>		//主机访问从机后得到的回复
-
+#include <math.h>
 
 
 
@@ -31,7 +31,7 @@ public:
 	int modbusState();	//查询串口状态,打开为1
 	int changeModbus(QString portname);	//串口关闭则打开；串口打开则关闭
 	int readControlMode();	//读取驱动器是pwm控制（稳压）还是转矩控制(稳流)还是闭环控制等，0为PWM控制，1为转矩控制
-	void writeCurrent(int channel);	//对某一路驱动器直接输入控制电流
+	void writeCurrent(float value,int channel);	//对某一路驱动器直接输入控制电流,输入最多有小数点后两位
 
 
 private:
