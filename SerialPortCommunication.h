@@ -28,9 +28,10 @@ public:
 
 	QList<QSerialPortInfo> showSerialPorts();	//显示所有可用的串口，以qlist形式传递数据
 
-	int modbusState();	//查询串口状态
+	int modbusState();	//查询串口状态,打开为1
 	int changeModbus(QString portname);	//串口关闭则打开；串口打开则关闭
 	int readControlMode();	//读取驱动器是pwm控制（稳压）还是转矩控制(稳流)还是闭环控制等，0为PWM控制，1为转矩控制
+	void writeCurrent(int channel);	//对某一路驱动器直接输入控制电流
 
 
 private:
@@ -42,9 +43,10 @@ private:
 
 
 
-//private slots:
+private slots:
 //	void openSerialPort();
 //	void closeSerialPort();
+	void readReady();
 	
 };
 

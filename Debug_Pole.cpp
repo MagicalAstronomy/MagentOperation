@@ -17,6 +17,8 @@ Debug_Pole::Debug_Pole(QWidget *parent)
 
 
 	connect(ui.openCom, SIGNAL(clicked()), this, SLOT(changeCom()));
+	connect(ui.inputCurrent, SIGNAL(clicked()), this, SLOT(inputCurrent()));
+
 
 	
 	//list = serialportcommunication->showSerialPorts();
@@ -68,6 +70,15 @@ void Debug_Pole::changeCom()
 		ui.portList->setEnabled(true);
 		ui.openCom->setText(tr("打开串口"));
 	}
+
+
+}
+
+void Debug_Pole::inputCurrent()
+{
+	//测试读取数据是否成功时借用此按钮实现
+	serialportcommunication->readControlMode();
+
 
 
 }

@@ -32,4 +32,5 @@ signals:
 private slots:
 	void ontimeout();   //定时器到指定值时触发槽函数
 	void changeCom();
+	void inputCurrent();
 };
