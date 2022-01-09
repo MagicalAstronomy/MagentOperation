@@ -95,7 +95,7 @@ int SerialPortCommunication::readControlMode()
 	}
 	QModbusDataUnit readUnit(QModbusDataUnit::HoldingRegisters, 0x0080, 0x0001);	//设置读模式，寄存器地址，以及读取的数据长度
 
-	if (auto* reply = modbusObj->sendReadRequest(readUnit, 0x02))
+	if (auto* reply = modbusObj->sendReadRequest(readUnit, 0x09))
 	{
 		if(!reply->isFinished())
 		{

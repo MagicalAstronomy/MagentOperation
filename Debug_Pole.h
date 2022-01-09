@@ -25,6 +25,8 @@ private:
 
 	QTimer* spRefreshTimer;	//刷新串口选择的定时器
 
+	float* currentValue;	//串口输入的电流值，4个通道分别以北-南-东-西储存在数组中
+
 signals:
 	void emit_refreshsp();  //定时器刷新串口的信号函数
 
