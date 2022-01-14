@@ -38,7 +38,7 @@ void Debug_Pole::ontimeout()
 	if(!serialportcommunication->modbusState())	//只有串口未打开时才进行刷新
 	{ 
 		listCache = serialportcommunication->showSerialPorts();
-		if (list.size() != listCache.size())	//直接比较两个qlist不成功，似乎因为qlist中存储的qserialportinfo变量没有重载过=
+		if (list.size() != listCache.size())	//直接比较两个qlist不成功，似乎因为qlist中存储的qserialportinfo变量没有重载过=0
 		{
 			list.clear();
 			list += listCache;
@@ -87,9 +87,9 @@ void Debug_Pole::inputCurrent()	//产生指定电流 北->0x02 ;南->0x09 ; 东->0x05 ;西
 	//serialportcommunication->writeCurrent(2.0, 0x02);
 	
 	currentValue[0] = ui.current_North->text().toFloat();
-	currentValue[1] = ui.current_South->text().toFloat();
+	currentValue[1] = -1 * ui.current_South->text().toFloat();	//如此输入，则南北两侧通入同号的电流在中间磁场值为0
 	currentValue[2] = ui.current_East->text().toFloat();
-	currentValue[3] = -1 * ui.current_West->text().toFloat();	//当西侧电流取反时，东西两侧通入相同正负的电流在中间磁场值为0
+	currentValue[3] = -1 * ui.current_West->text().toFloat();	//如此输入，则东西两侧通入同号的电流在中间磁场值为0
 	qDebug() << currentValue[1];
 	serialportcommunication->writeCurrent(currentValue[0], 0x02);
 	serialportcommunication->writeCurrent(currentValue[1], 0x09);
