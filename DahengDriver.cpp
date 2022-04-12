@@ -42,12 +42,15 @@ public:
 		// resize(temp_img, *src_img, temp_img.size());
 		//imshow("picture capture", *src_img);
 		//waitKey(1);
-		cout << "收到一帧图像!" << endl;
-		/*cout << "ImageInfo: " << objImageDataPointer->GetStatus() << endl;
+		/*cout << "收到一帧图像!" << endl;
+		cout << "ImageInfo: " << objImageDataPointer->GetStatus() << endl;
 		cout << "图片宽度: " << objImageDataPointer->GetWidth() << endl;
 		cout << "图片高度: " << objImageDataPointer->GetHeight() << endl;
-		cout << "ImageInfo: " << objImageDataPointer->GetPayloadSize() << endl;*/
-		cout << "帧数：" << objImageDataPointer->GetFrameID() << endl;
+		cout << "ImageInfo: " << objImageDataPointer->GetPayloadSize() << endl;
+		cout << "帧数：" << objImageDataPointer->GetFrameID() << endl;*/
+
+		* (bool*)(pUserParam) = true;
+
 	}
 };
 
@@ -57,7 +60,8 @@ public:
 DahengDriver::DahengDriver()
 {
 	buffer = cv::Mat::zeros(cv::Size(2048, 2448), CV_8UC3);
-
+	frameFlag = false;
+	flagPtr = (void*)&frameFlag;
 	/*对大恒库进行初始化*/
 	IGXFactory::GetInstance().Init();
 
@@ -104,15 +108,23 @@ DahengDriver::DahengDriver()
 			////设置曝光时间(示例中写死us,只是示例,并不代表真正可工作参数)
 			ObjFeatureControlPtr->GetFloatFeature("ExposureTime")->SetValue(10000);
 
+			
+
 			//注册回调采集
 			pCaptureEventHandler = new CSampleCaptureEventHandler();
-			ObjStreamPtr->RegisterCaptureCallback(pCaptureEventHandler, NULL);
+			//ObjStreamPtr->RegisterCaptureCallback(pCaptureEventHandler, NULL);
+
+			ObjStreamPtr->RegisterCaptureCallback(pCaptureEventHandler, flagPtr);
+
+			
 
 			/*用于设置采集buffer个数 没太明白有什么用，先不使用了吧
 			ObjStreamPtr->SetAcqusitionBufferNumber(2);
 			*/
 
-			//发送开采命令，后续可移动到按钮指令中
+			//发送开采命令，已移动到按钮指令中
+			//ObjStreamPtr->StartGrab();
+			//ObjFeatureControlPtr->GetCommandFeature("AcquisitionStart")->Execute();
 			ObjStreamPtr->StartGrab();
 			ObjFeatureControlPtr->GetCommandFeature("AcquisitionStart")->Execute();
 
@@ -150,11 +162,26 @@ DahengDriver::~DahengDriver()
 	//销毁设备指针和流指针
 	ObjStreamPtr->Close();
 	ObjDevicePtr->Close();
+	delete flagPtr;
 }
 
 void DahengDriver::getPicture(cv::Mat& img)
 {
 	//将当前帧输出到img
 	buffer.copyTo(img);
+	frameFlag = false;
 
+	cout << "成功拷贝 " << endl;
+}
+
+void DahengDriver::startGrab()
+{
+	ObjStreamPtr->StartGrab();
+	ObjFeatureControlPtr->GetCommandFeature("AcquisitionStart")->Execute();
+}
+
+void DahengDriver::stopGrab()
+{
+	ObjFeatureControlPtr->GetCommandFeature("AcquisitionStop")->Execute();
+	ObjStreamPtr->StopGrab();
 }

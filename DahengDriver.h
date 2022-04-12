@@ -12,6 +12,12 @@ public:
 	DahengDriver();
 	~DahengDriver();
 	void getPicture(cv::Mat& img);
+	void startGrab();
+	void stopGrab();
+
+	bool frameFlag;
+	
+
 
 private:
 	CGXDevicePointer ObjDevicePtr;	//…Ë±∏÷∏’Î
@@ -20,7 +26,7 @@ private:
 	CGXFeatureControlPointer ObjStreamFeatureControlPtr;
 
 	ICaptureEventHandler* pCaptureEventHandler = nullptr;
-
+	void* flagPtr;
 
 
 };

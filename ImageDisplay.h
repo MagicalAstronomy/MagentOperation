@@ -8,6 +8,8 @@
 
 #include<opencv2/opencv.hpp>
 
+#include "Cam.h"
+
 class ImageDisplay : public QWidget
 {
 	Q_OBJECT
@@ -27,9 +29,13 @@ private:
 
 	QImage* image;
 
+	//int counter = 0;
+
+	Cam* cam;
+
 
 //自定义槽函数
 private slots:
-	void refresh();   //定时器到指定值时触发槽函数
+	void queryStatus();   //定时器到指定值时触发槽函数
 
 };

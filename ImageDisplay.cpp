@@ -5,12 +5,16 @@ ImageDisplay::ImageDisplay(QWidget *parent)
 {
 	ui.setupUi(this);
 
-    QTimer* uiRefreshTimer = new QTimer(this);
+    cam = new Cam();
 
-    //设置参数值刷新时间10ms
-    uiRefreshTimer->setInterval(100);
-    connect(uiRefreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
-    uiRefreshTimer->start();
+    QTimer* RefreshTimer = new QTimer(this);
+
+    RefreshTimer->setTimerType(Qt::TimerType::PreciseTimer);
+
+    //设置查询flag时间间隔1ms，这样每两帧输出的时间差最长为1ms
+    RefreshTimer->setInterval(10);
+    connect(RefreshTimer, SIGNAL(timeout()), this, SLOT(queryStatus()));
+    RefreshTimer->start();
 
     //capture = cv::VideoCapture(0);
     //上下两种方式都可以打开摄像头
@@ -28,9 +32,9 @@ ImageDisplay::~ImageDisplay()
 {
 }
 
-void ImageDisplay::refresh()
+void ImageDisplay::queryStatus()
 {
-    
+
     //capture >> frame;
     //上下两种方式都可以读取帧到cv::Mat矩阵
     /*
@@ -44,4 +48,11 @@ void ImageDisplay::refresh()
     /*imshow("摄像头", frame);
     cv::waitKey(10);  //这个数多少在opencv里的刷新率就是多少ms
     */
+    //测试1ms的定时器精度能否达到要求
+    //qDebug() << "刷新次数：" << ++counter;
+
+    
+    cv::imshow("摄像头", cam->getFrame());
+
+
 }

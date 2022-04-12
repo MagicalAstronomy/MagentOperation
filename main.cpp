@@ -6,6 +6,8 @@
 #include <QTime>
 #include <QDebug>
 
+#include "DahengDriver.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -43,6 +45,28 @@ int main(int argc, char *argv[])
     }
        
        */
+
+
+    /*测试大恒相机驱动
+    
+            cv::Mat frame;
+    DahengDriver* daheng = new DahengDriver();
+    while (1)
+        {
+            
+           //capture >> frame;
+
+            daheng->getPicture(frame);
+            cv::resize(frame, frame, cv::Size(0,0),0.4,0.4);
+            imshow("大恒相机", frame);
+            cv::waitKey(1000);  //这个数多少在opencv里的刷新率就是多少ms。
+        }
+
+
+    */
+
+
+
 
 
     QApplication a(argc, argv);

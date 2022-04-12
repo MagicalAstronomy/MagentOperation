@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cam.cpp" />
     <ClCompile Include="DahengDriver.cpp" />
     <ClCompile Include="Debug_Pole.cpp" />
     <ClCompile Include="MainInterface.cpp" />
@@ -107,6 +108,7 @@
     <QtMoc Include="ImageDisplay.h" />
     <QtMoc Include="Debug_Pole.h" />
     <QtMoc Include="SerialPortCommunication.h" />
+    <ClInclude Include="Cam.h" />
     <ClInclude Include="DahengDriver.h" />
     <ClInclude Include="Settings.h" />
   </ItemGroup>
