@@ -1,7 +1,12 @@
 #pragma once
 
 #include <QWidget>
+#include <qtimer.h>
+#include <QtCore/QDebug>
+#include <iostream>
 #include "ui_ImageDisplay.h"
+
+#include<opencv2/opencv.hpp>
 
 class ImageDisplay : public QWidget
 {
@@ -11,6 +16,20 @@ public:
 	ImageDisplay(QWidget *parent = Q_NULLPTR);
 	~ImageDisplay();
 
+	
+
 private:
 	Ui::ImageDisplay ui;
+	/*
+	cv::VideoCapture capture;
+	*/
+	cv::Mat frame;
+
+	QImage* image;
+
+
+//自定义槽函数
+private slots:
+	void refresh();   //定时器到指定值时触发槽函数
+
 };

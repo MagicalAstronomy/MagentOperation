@@ -8,7 +8,7 @@ MainInterface::MainInterface(QWidget *parent)
 
 	hlayout = new QHBoxLayout();
 
-	imagedisplay = new ImageDisplay();
+	
 
 
 }
@@ -21,10 +21,15 @@ MainInterface::~MainInterface()
 void MainInterface::showUI()
 {
 	//由于两个子窗口分别是768*768和256*768，选择图像子窗口比例为3，控制子窗口比例为1
-	hlayout->addWidget(imagedisplay ,3);
+	
+	imagedisplay = new ImageDisplay();
+
+	hlayout->addWidget(imagedisplay, 3);
 
 	//由于构造函数执行时尚未选择模式，因此通过选择的模式决定画面的代码不能放在构造函数中，可以放在显示界面时
 	this->chooseUI();
+
+	
 
 	this->setLayout(hlayout);
 

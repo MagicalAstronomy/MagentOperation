@@ -2,8 +2,49 @@
 #include "MainInterface.h"
 #include <QtWidgets/QApplication>
 
+#include <opencv2/opencv.hpp>
+#include <QTime>
+#include <QDebug>
+
+
 int main(int argc, char *argv[])
 {
+
+
+    /*²âÊÔÉãÏñÍ·Ö¡ÂÊ
+    cv::Mat frame;
+    cv::VideoCapture capture(0);
+    capture.set(cv::CAP_PROP_FPS, 25);
+
+    double fps = 0;
+    QTime lasttime = QTime::currentTime();
+    int framecount = 0;
+
+    while (1)
+    {
+        capture >> frame;
+
+        cv::imshow("ÉãÏñÍ·",frame);
+
+        framecount++;
+
+        QTime curtime = QTime::currentTime();
+
+        if (lasttime.msecsTo(curtime) > 10000)
+        {
+            fps = framecount /10;
+            framecount = 0;
+            lasttime = curtime;
+            qDebug() << "fps:" << fps;
+
+        }
+
+        cv::waitKey(10);
+    }
+       
+       */
+
+
     QApplication a(argc, argv);
     Login login;
 

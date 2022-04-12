@@ -13,19 +13,6 @@
   <property name="windowTitle">
    <string>Debug_Pole</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>630</y>
-     <width>111</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>平面四极——调试</string>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
@@ -113,7 +100,7 @@
    <property name="title">
     <string>控制每一路电流(小数点后两位精度)</string>
    </property>
-   <widget class="QLineEdit" name="current_North">
+   <widget class="QLineEdit" name="current_east">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -123,7 +110,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="current_South">
+   <widget class="QLineEdit" name="current_north">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -133,7 +120,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="current_East">
+   <widget class="QLineEdit" name="current_south">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -143,7 +130,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="current_West">
+   <widget class="QLineEdit" name="current_west">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -176,7 +163,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>北：</string>
+     <string>东：</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_6">
@@ -189,7 +176,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>南：</string>
+     <string>北：</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_7">
@@ -202,7 +189,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>东：：</string>
+     <string>南：</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">
@@ -268,6 +255,163 @@
     </property>
     <property name="text">
      <string>A</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>380</y>
+     <width>231</width>
+     <height>381</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>磁场标定</string>
+   </property>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>211</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>输入单侧标准电流</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>211</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>输入对向电流</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>190</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>160</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>记录磁场</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>190</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>x轴位置：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>230</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>y轴位置：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_15">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>270</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>x轴强度：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_16">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>300</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>y轴强度：</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>230</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_3">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>270</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_4">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>310</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>340</y>
+      <width>211</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>数据记录</string>
     </property>
    </widget>
   </widget>

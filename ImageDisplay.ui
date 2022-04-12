@@ -6,24 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>768</width>
+    <width>736</width>
     <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ImageDisplay</string>
   </property>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="image">
    <property name="geometry">
     <rect>
-     <x>340</x>
-     <y>370</y>
-     <width>54</width>
-     <height>12</height>
+     <x>30</x>
+     <y>10</y>
+     <width>640</width>
+     <height>480</height>
     </rect>
    </property>
    <property name="text">
-    <string>图片显示</string>
+    <string/>
    </property>
   </widget>
  </widget>

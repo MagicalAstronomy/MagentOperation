@@ -48,6 +48,8 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(QtMsBuild)\Qt.props" />
+    <Import Project="..\opencvConfig.props" />
+    <Import Project="..\DahengConfig.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -85,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DahengDriver.cpp" />
     <ClCompile Include="Debug_Pole.cpp" />
     <ClCompile Include="MainInterface.cpp" />
     <ClCompile Include="ImageDisplay.cpp" />
@@ -104,6 +107,7 @@
     <QtMoc Include="ImageDisplay.h" />
     <QtMoc Include="Debug_Pole.h" />
     <QtMoc Include="SerialPortCommunication.h" />
+    <ClInclude Include="DahengDriver.h" />
     <ClInclude Include="Settings.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

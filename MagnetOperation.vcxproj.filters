@@ -55,9 +55,15 @@
     <ClCompile Include="SerialPortCommunication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DahengDriver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DahengDriver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
