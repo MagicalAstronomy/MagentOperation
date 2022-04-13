@@ -4,9 +4,11 @@
 #include <qtimer.h>
 #include <QtCore/QDebug>
 #include <iostream>
+#include <QtWinExtras/QtWinExtras>
 #include "ui_ImageDisplay.h"
 
-#include<opencv2/opencv.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui_c.h>
 
 #include "Cam.h"
 
@@ -26,6 +28,8 @@ private:
 	cv::VideoCapture capture;
 	*/
 	cv::Mat frame;
+	cv::Mat frameShow;	//用于展示用的frame，从2248*2048到562*512
+	std::string winName;	//展示用窗口的名字
 
 	QImage* image;
 
@@ -37,5 +41,8 @@ private:
 //自定义槽函数
 private slots:
 	void queryStatus();   //定时器到指定值时触发槽函数
+	void startCapture();
+	void stopCapture();
+
 
 };

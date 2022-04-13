@@ -26,7 +26,7 @@ public:
 		/*把pRGB24Buffer地址的width* height * 3大小的内存内容拷贝到buffer这个mat中*/
 		memcpy(buffer.data, pRGB24Buffer, 2048 * 2448 * 3);
 
-		/*使用create创建一个8UC3类型的mat对象*/
+		/*使用create创建一个8UC3类型的mat对象，两个参数分别是row和col，即高和宽*/
 		buffer.create(2048, 2448, CV_8UC3);
 
 
@@ -59,7 +59,8 @@ public:
 
 DahengDriver::DahengDriver()
 {
-	buffer = cv::Mat::zeros(cv::Size(2048, 2448), CV_8UC3);
+	//cvsize的两个参数分别是width和high，与create中是反过来的
+	buffer = cv::Mat::zeros(cv::Size(2448, 2048), CV_8UC3);
 	frameFlag = false;
 	flagPtr = (void*)&frameFlag;
 	/*对大恒库进行初始化*/
@@ -106,7 +107,7 @@ DahengDriver::DahengDriver()
 			ObjStreamFeatureControlPtr->GetEnumFeature("StreamBufferHandlingMode")->SetValue("NewestOnly");
 
 			////设置曝光时间(示例中写死us,只是示例,并不代表真正可工作参数)
-			ObjFeatureControlPtr->GetFloatFeature("ExposureTime")->SetValue(10000);
+			ObjFeatureControlPtr->GetFloatFeature("ExposureTime")->SetValue(30000);
 
 			
 
@@ -125,9 +126,7 @@ DahengDriver::DahengDriver()
 			//发送开采命令，已移动到按钮指令中
 			//ObjStreamPtr->StartGrab();
 			//ObjFeatureControlPtr->GetCommandFeature("AcquisitionStart")->Execute();
-			ObjStreamPtr->StartGrab();
-			ObjFeatureControlPtr->GetCommandFeature("AcquisitionStart")->Execute();
-
+	
 		} while (0);
 	}
 	catch (CGalaxyException& e)
@@ -171,7 +170,7 @@ void DahengDriver::getPicture(cv::Mat& img)
 	buffer.copyTo(img);
 	frameFlag = false;
 
-	cout << "成功拷贝 " << endl;
+	
 }
 
 void DahengDriver::startGrab()

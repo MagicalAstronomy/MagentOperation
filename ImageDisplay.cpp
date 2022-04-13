@@ -16,6 +16,12 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     connect(RefreshTimer, SIGNAL(timeout()), this, SLOT(queryStatus()));
     RefreshTimer->start();
 
+    //开始观察按钮使能
+    connect(ui.startCapture, SIGNAL(clicked()), this, SLOT(startCapture()));
+
+    //停止观察按钮使能
+    connect(ui.stopCapture, SIGNAL(clicked()), this, SLOT(stopCapture()));
+
     //capture = cv::VideoCapture(0);
     //上下两种方式都可以打开摄像头
     
@@ -23,9 +29,18 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     */
     //qDebug() << capture.get(3);
 
-    
-    
-    
+    //把opencv的窗口控件绑定到qt的qlabel上
+    frame = cv::Mat::zeros(cv::Size(2448,2048), CV_8UC3);
+    frameShow = cv::Mat::zeros(cv::Size(612,512), CV_8UC3);
+    qDebug() << frame.rows;
+    winName = "frame";
+    cv::namedWindow(winName, cv::WINDOW_AUTOSIZE);
+
+    HWND hwnd = (HWND)cvGetWindowHandle(winName.c_str());
+    HWND hparent = GetParent(hwnd);
+    SetParent(hwnd, (HWND)ui.image->winId());
+    ShowWindow(hparent, SW_HIDE);
+    //cv::imshow(winName, frameShow);
 }
 
 ImageDisplay::~ImageDisplay()
@@ -52,7 +67,30 @@ void ImageDisplay::queryStatus()
     //qDebug() << "刷新次数：" << ++counter;
 
     
-    cv::imshow("摄像头", cam->getFrame());
+    //cv::imshow("摄像头", cam->getFrame());
 
 
+    if (cam->getStatus())
+    {
+        frame = cam->getFrame();
+        //cv::resize(frame, frameShow, cv::Size(562, 512));
+        //cv::imshow(winName, frameShow);
+        cv::resize(frame, frameShow, cv::Size(0,0),0.25,0.25);
+
+        cv::imshow(winName, frameShow);
+    }
+
+}
+
+void ImageDisplay::startCapture()
+{
+    cam->startVideoCapture();
+
+    
+}
+
+void ImageDisplay::stopCapture()
+{
+
+    cam->stopVideoCapture();
 }
