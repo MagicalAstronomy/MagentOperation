@@ -4,6 +4,7 @@ ImageDisplay::ImageDisplay(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+    uiptr = &ui;
 
     cam = new Cam();
 
@@ -21,6 +22,9 @@ ImageDisplay::ImageDisplay(QWidget *parent)
 
     //停止观察按钮使能
     connect(ui.stopCapture, SIGNAL(clicked()), this, SLOT(stopCapture()));
+
+    //开始保存图片按钮使能
+    connect(ui.savePic, SIGNAL(clicked()), this, SLOT(savePic()));
 
     //capture = cv::VideoCapture(0);
     //上下两种方式都可以打开摄像头
@@ -40,6 +44,7 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     HWND hparent = GetParent(hwnd);
     SetParent(hwnd, (HWND)ui.image->winId());
     ShowWindow(hparent, SW_HIDE);
+    cv::setMouseCallback(winName, OnMouse, (void* )uiptr);
     //cv::imshow(winName, frameShow);
 }
 
@@ -93,4 +98,30 @@ void ImageDisplay::stopCapture()
 {
 
     cam->stopVideoCapture();
+}
+
+void ImageDisplay::savePic()
+{
+    time = QDateTime::currentDateTime();
+    //保存的文件名不能有冒号什么的
+    str_time = time.toString("yyyy-MM-dd-hh-mm-ss");
+    //路径中不能出现中文
+    //QString path = "d:\\磁控\\实验记录\\" + str_time + ".jpg";
+
+    path = "D:/Experiment/" + str_time + ".jpg";
+    //QString path = "D:/1.jpg";
+    cv::imwrite(path.toStdString(), frame);
+    
+}
+
+void ImageDisplay::OnMouse(int event, int x, int y, int flags, void* param)
+{
+    if (event == cv::EVENT_MOUSEMOVE)
+    {
+        QString str_x = QString::number(x * 4);
+        QString str_y = QString::number(y * 4);
+        QString coorOutput = "(" + str_y + "," + str_x + ")";
+
+        (*(Ui::ImageDisplay * )param).Coordinate->setText(coorOutput);
+    }
 }

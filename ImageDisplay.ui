@@ -52,6 +52,58 @@
     <string>停止观察</string>
    </property>
   </widget>
+  <widget class="QLabel" name="Coordinate">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>532</y>
+     <width>100</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>当前坐标值</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="savePic">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>200</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>保存图片</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pathTip1">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>380</y>
+     <width>100</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>保存路径：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pathTip2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>400</y>
+     <width>100</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>D:/Experiment</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
