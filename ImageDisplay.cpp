@@ -1,4 +1,5 @@
 #include "ImageDisplay.h"
+#pragma execution_character_set("utf-8")
 
 ImageDisplay::ImageDisplay(QWidget *parent)
 	: QWidget(parent)
@@ -23,8 +24,19 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     //停止观察按钮使能
     connect(ui.stopCapture, SIGNAL(clicked()), this, SLOT(stopCapture()));
 
-    //开始保存图片按钮使能
+    //保存图片按钮使能
     connect(ui.savePic, SIGNAL(clicked()), this, SLOT(savePic()));
+
+    //开始保存视频按钮使能
+    connect(ui.saveVideoOn, SIGNAL(clicked()), this, SLOT(saveVideoOn()));
+
+    //停止保存视频按钮使能
+    connect(ui.saveVideoOff, SIGNAL(clicked()), this, SLOT(saveVideoOff()));
+
+    //显示和保存视频的信号与槽函数连接
+    connect(this, SIGNAL(emit_showFrame()), this, SLOT(slot_showFrame()));
+
+    connect(this, SIGNAL(emit_saveVideo()), this, SLOT(slot_saveVideo()));
 
     //capture = cv::VideoCapture(0);
     //上下两种方式都可以打开摄像头
@@ -36,7 +48,7 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     //把opencv的窗口控件绑定到qt的qlabel上
     frame = cv::Mat::zeros(cv::Size(2448,2048), CV_8UC3);
     frameShow = cv::Mat::zeros(cv::Size(612,512), CV_8UC3);
-    qDebug() << frame.rows;
+    //qDebug() << frame.rows;
     winName = "frame";
     cv::namedWindow(winName, cv::WINDOW_AUTOSIZE);
 
@@ -77,15 +89,52 @@ void ImageDisplay::queryStatus()
 
     if (cam->getStatus())
     {
-        frame = cam->getFrame();
-        //cv::resize(frame, frameShow, cv::Size(562, 512));
-        //cv::imshow(winName, frameShow);
-        cv::resize(frame, frameShow, cv::Size(0,0),0.25,0.25);
+        //frame = cam->getFrame();
+        ////cv::resize(frame, frameShow, cv::Size(562, 512));
+        ////cv::imshow(winName, frameShow);
+        //cv::resize(frame, frameShow, cv::Size(0,0),0.25,0.25);
 
-        cv::imshow(winName, frameShow);
+        //cv::imshow(winName, frameShow);
+
+        //if (videowriter != nullptr && videowriter->isOpened())
+        //{
+        //    videowriter->write(frame);
+        //}
+
+        frame = cam->getFrame();
+
+        emit emit_showFrame();
+        emit emit_saveVideo();
     }
 
 }
+
+void ImageDisplay::slot_showFrame()
+{
+    
+    
+
+    cv::resize(frame, frameShow, cv::Size(0, 0), 0.25, 0.25);
+
+    cv::imshow(winName, frameShow);
+
+    
+
+}
+
+void ImageDisplay::slot_saveVideo()
+{
+
+    if (videowriter != nullptr && videowriter->isOpened())
+    {
+        videowriter->write(frame);
+        //qDebug() << ++counter;
+    }
+
+}
+
+
+
 
 void ImageDisplay::startCapture()
 {
@@ -110,8 +159,43 @@ void ImageDisplay::savePic()
 
     path = "D:/Experiment/" + str_time + ".jpg";
     //QString path = "D:/1.jpg";
-    cv::imwrite(path.toStdString(), frame);
+    if (cv::imwrite(path.toStdString(), frame))
+    {
+        qDebug() << "保存图片成功！";
+    }
     
+}
+
+void ImageDisplay::saveVideoOn()
+{
+    time = QDateTime::currentDateTime();
+    str_time = time.toString("yyyy-MM-dd-hh-mm-ss");
+    path = "D:/Experiment/" + str_time + ".avi";
+
+    //一开始把videowriter作为ViderWriter类的对象，但感觉不如指针好用
+    //videowriter.open(path.toStdString(), videowriter.fourcc('M', 'J', 'P', 'G'), 60, frame.size(), true);
+    videowriter = new cv::VideoWriter(path.toStdString(), cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 18, frame.size(), true);
+    if (videowriter->isOpened())
+    {
+        qDebug() << "已开启视频录制！";
+    }
+}
+
+void ImageDisplay::saveVideoOff()
+{
+    
+    if (videowriter == nullptr)
+    {
+        qDebug() << "尚未开启视频录制！";
+    }
+    else
+    {
+        videowriter->release();
+        videowriter = nullptr;
+        qDebug() << "成功结束录制！";
+    }
+
+
 }
 
 void ImageDisplay::OnMouse(int event, int x, int y, int flags, void* param)
@@ -125,3 +209,4 @@ void ImageDisplay::OnMouse(int event, int x, int y, int flags, void* param)
         (*(Ui::ImageDisplay * )param).Coordinate->setText(coorOutput);
     }
 }
+

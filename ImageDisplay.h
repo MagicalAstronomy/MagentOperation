@@ -32,13 +32,15 @@ private:
 	cv::Mat frame;
 	cv::Mat frameShow;	//用于展示用的frame，从2248*2048到562*512
 	std::string winName;	//展示用窗口的名字
+	cv::VideoWriter* videowriter = nullptr;	//保存视频用的类
+	
 
 	QImage* image;
 
 	QDateTime time;		//取当前时间戳，用来保存图片和视频
 	QString str_time;	//时间戳改为qstring格式
 	QString path;		//使用绝对路径表示存储位置
-	//int counter = 0;
+	int counter = 0;
 
 	Cam* cam;
 
@@ -48,12 +50,21 @@ private:
 	static void OnMouse(int event, int x, int y, int flags, void* param);
 
 
+signals:
+	void emit_showFrame();	//在程序中展示帧的信号
+	void emit_saveVideo();	//保存视频的信号
+
 //自定义槽函数
 private slots:
 	void queryStatus();   //定时器到指定值时触发槽函数
-	void startCapture();
-	void stopCapture();
-	void savePic();
+	void startCapture();	//开始采集图像
+	void stopCapture();		//停止采集图像
+	void savePic();			//保存当前图像
+	void saveVideoOn();		//开始保存视频
+	void saveVideoOff();	//停止保存视频
+	void slot_showFrame();	//在程序中展示帧的槽函数
+	void slot_saveVideo();	//保存视频的槽函数
+
 
 
 };

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>736</width>
-    <height>768</height>
+    <height>776</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -82,7 +82,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>380</y>
+     <y>350</y>
      <width>100</width>
      <height>20</height>
     </rect>
@@ -95,13 +95,52 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>400</y>
+     <y>370</y>
      <width>100</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>D:/Experiment</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="saveVideoOn">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>290</y>
+     <width>40</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>开始</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="saveVideoOff">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>290</y>
+     <width>40</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>停止</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pathTip1_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>270</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>保存视频：</string>
    </property>
   </widget>
  </widget>
