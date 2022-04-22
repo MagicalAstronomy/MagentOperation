@@ -90,6 +90,7 @@
     <ClCompile Include="Cam.cpp" />
     <ClCompile Include="DahengDriver.cpp" />
     <ClCompile Include="Debug_Pole.cpp" />
+    <ClCompile Include="ImageProcessing.cpp" />
     <ClCompile Include="MainInterface.cpp" />
     <ClCompile Include="ImageDisplay.cpp" />
     <ClCompile Include="SerialPortCommunication.cpp" />
@@ -110,6 +111,7 @@
     <QtMoc Include="SerialPortCommunication.h" />
     <ClInclude Include="Cam.h" />
     <ClInclude Include="DahengDriver.h" />
+    <ClInclude Include="ImageProcessing.h" />
     <ClInclude Include="Settings.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

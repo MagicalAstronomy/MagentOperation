@@ -11,6 +11,7 @@
 #include <opencv2/highgui/highgui_c.h>
 
 #include "Cam.h"
+#include "ImageProcessing.h"
 
 class ImageDisplay : public QWidget
 {
@@ -43,6 +44,12 @@ private:
 	int counter = 0;
 
 	Cam* cam;
+	ImageProcessing* imageprocessing;
+
+	//得到单个磁珠在原图像中的坐标位置和半径
+	cv::Point2f magent_center;
+	float magent_radius;
+
 
 	//鼠标所在位置点坐标，初始化为0
 	int mouse_x = 0, mouse_y = 0;
@@ -56,7 +63,7 @@ signals:
 
 //自定义槽函数
 private slots:
-	void queryStatus();   //定时器到指定值时触发槽函数
+	void queryStatus();   //定时器到指定值时触发槽函数,只有一个线程，因此尽量少做耗时的工作，否则帧数会随之降低
 	void startCapture();	//开始采集图像
 	void stopCapture();		//停止采集图像
 	void savePic();			//保存当前图像

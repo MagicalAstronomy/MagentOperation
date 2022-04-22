@@ -107,7 +107,7 @@ DahengDriver::DahengDriver()
 			ObjStreamFeatureControlPtr->GetEnumFeature("StreamBufferHandlingMode")->SetValue("NewestOnly");
 
 			////设置曝光时间(示例中写死us,只是示例,并不代表真正可工作参数)
-			ObjFeatureControlPtr->GetFloatFeature("ExposureTime")->SetValue(30000);
+			ObjFeatureControlPtr->GetFloatFeature("ExposureTime")->SetValue(10000);
 
 			
 

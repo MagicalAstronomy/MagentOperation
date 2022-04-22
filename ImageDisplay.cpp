@@ -8,6 +8,7 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     uiptr = &ui;
 
     cam = new Cam();
+    imageprocessing = new ImageProcessing();
 
     QTimer* RefreshTimer = new QTimer(this);
 
@@ -103,8 +104,16 @@ void ImageDisplay::queryStatus()
 
         frame = cam->getFrame();
 
+        //使用最近邻插值加速放缩，会消耗11ms左右
+        cv::resize(frame, frameShow, cv::Size(0, 0), 0.25, 0.25,cv::INTER_NEAREST);
+
+        //获得磁珠的中心和半径(缩小尺寸下)
+        imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
+
+
         emit emit_showFrame();
         emit emit_saveVideo();
+        
     }
 
 }
@@ -114,7 +123,7 @@ void ImageDisplay::slot_showFrame()
     
     
 
-    cv::resize(frame, frameShow, cv::Size(0, 0), 0.25, 0.25);
+    
 
     cv::imshow(winName, frameShow);
 
@@ -122,16 +131,7 @@ void ImageDisplay::slot_showFrame()
 
 }
 
-void ImageDisplay::slot_saveVideo()
-{
 
-    if (videowriter != nullptr && videowriter->isOpened())
-    {
-        videowriter->write(frame);
-        //qDebug() << ++counter;
-    }
-
-}
 
 
 
@@ -159,7 +159,7 @@ void ImageDisplay::savePic()
 
     path = "D:/Experiment/" + str_time + ".jpg";
     //QString path = "D:/1.jpg";
-    if (cv::imwrite(path.toStdString(), frame))
+    if (cv::imwrite(path.toStdString(), frameShow))
     {
         qDebug() << "保存图片成功！";
     }
@@ -174,7 +174,7 @@ void ImageDisplay::saveVideoOn()
 
     //一开始把videowriter作为ViderWriter类的对象，但感觉不如指针好用
     //videowriter.open(path.toStdString(), videowriter.fourcc('M', 'J', 'P', 'G'), 60, frame.size(), true);
-    videowriter = new cv::VideoWriter(path.toStdString(), cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 18, frame.size(), true);
+    videowriter = new cv::VideoWriter(path.toStdString(), cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 60, frameShow.size(), true);
     if (videowriter->isOpened())
     {
         qDebug() << "已开启视频录制！";
@@ -195,6 +195,15 @@ void ImageDisplay::saveVideoOff()
         qDebug() << "成功结束录制！";
     }
 
+
+}void ImageDisplay::slot_saveVideo()
+{
+
+    if (videowriter != nullptr && videowriter->isOpened())
+    {
+        videowriter->write(frameShow);
+        //qDebug() << ++counter;
+    }
 
 }
 
