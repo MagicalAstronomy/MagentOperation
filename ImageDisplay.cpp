@@ -39,6 +39,17 @@ ImageDisplay::ImageDisplay(QWidget *parent)
 
     connect(this, SIGNAL(emit_saveVideo()), this, SLOT(slot_saveVideo()));
 
+    //开始定位磁珠按钮使能 其实不点击按钮一样会自动寻找磁珠位置，只是不会显示
+    
+
+    //开始和结束绘制中心点使能
+    connect(ui.drawCenteralPoint, SIGNAL(clicked()), this, SLOT(drawCenteralPoint()));
+    connect(ui.stopdrawCenteralPoint, SIGNAL(clicked()), this, SLOT(stopdrawCenteralPoint()));
+
+    //开始和结束绘制目标点使能
+    connect(ui.drawTargetPoint, SIGNAL(clicked()), this, SLOT(drawTargetPoint()));
+    connect(ui.stopdrawTargetPoint, SIGNAL(clicked()), this, SLOT(stopdrawTargetPoint()));
+
     //capture = cv::VideoCapture(0);
     //上下两种方式都可以打开摄像头
     
@@ -109,7 +120,7 @@ void ImageDisplay::queryStatus()
 
         //获得磁珠的中心和半径(缩小尺寸下)
         imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
-
+        cv::circle(frameShow, magent_center, magent_radius, CV_RGB(255, 0, 0), 1);
 
         emit emit_showFrame();
         emit emit_saveVideo();
@@ -121,7 +132,14 @@ void ImageDisplay::queryStatus()
 void ImageDisplay::slot_showFrame()
 {
     
-    
+    if (flag_drawCenteral)
+    {
+        cv::circle(frameShow, cv::Point(frameShow.cols/2, frameShow.rows / 2), magent_radius, CV_RGB(0, 0, 255), 1);
+    }
+    if (flag_drawTarget)
+    {
+        cv::circle(frameShow, target_center, magent_radius, CV_RGB(0, 0, 255), 1);
+    }
 
     
 
@@ -205,6 +223,35 @@ void ImageDisplay::saveVideoOff()
         //qDebug() << ++counter;
     }
 
+}
+
+void ImageDisplay::drawCenteralPoint()
+{
+    flag_drawCenteral = true;
+}
+
+void ImageDisplay::stopdrawCenteralPoint()
+{
+    flag_drawCenteral = false;
+}
+
+void ImageDisplay::drawTargetPoint()
+{
+    if (ui.target_x->text().isEmpty() || ui.target_y->text().isEmpty())
+    {
+        qDebug() << "请输入原图像大小下目标点坐标！";
+    }
+    else
+    {
+        target_center = cv::Point2f(ui.target_y->text().toFloat() / 4, ui.target_x->text().toFloat() / 4);
+        flag_drawTarget = true;
+    }
+    
+}
+
+void ImageDisplay::stopdrawTargetPoint()
+{
+    flag_drawTarget = false;
 }
 
 void ImageDisplay::OnMouse(int event, int x, int y, int flags, void* param)

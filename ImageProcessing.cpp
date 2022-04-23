@@ -46,7 +46,7 @@ void ImageProcessing::locateMagnet(cv::Mat img, cv::Point2f& center, float& radi
 
 	cv::minEnclosingCircle(contours.at(max_index), center, radius);
 
-	cv::circle(img, center, radius, CV_RGB(255, 0, 0), 1);
+	
 
 	int64 endtime = cv::getTickCount();
 

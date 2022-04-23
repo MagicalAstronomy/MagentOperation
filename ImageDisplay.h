@@ -52,6 +52,8 @@ private:
 
 	bool flag_drawCenteral = false;
 	bool flag_drawTarget = false;
+	bool flag_locatemag = false;
+	cv::Point2f target_center = cv::Point2f(0, 0);
 
 
 	//鼠标所在位置点坐标，初始化为0
@@ -78,6 +80,9 @@ private slots:
 	void drawTargetPoint();	//在指定目标点处绘制圆形目标区域
 	void stopdrawCenteralPoint();	//停止绘制中心点圆形
 	void stopdrawTargetPoint();		//停止绘制目标点圆形
+	//void startLocateMag();		//开始绘制磁珠位置圆形
+	//void stopLocateMag();		//结束绘制磁珠位置圆形
+	
 
 
 
