@@ -40,7 +40,8 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     connect(this, SIGNAL(emit_saveVideo()), this, SLOT(slot_saveVideo()));
 
     //开始定位磁珠按钮使能 其实不点击按钮一样会自动寻找磁珠位置，只是不会显示
-    
+    connect(ui.startLocateMag, SIGNAL(clicked()), this, SLOT(startLocateMag()));
+    connect(ui.stopLocateMag, SIGNAL(clicked()), this, SLOT(stopLocateMag()));
 
     //开始和结束绘制中心点使能
     connect(ui.drawCenteralPoint, SIGNAL(clicked()), this, SLOT(drawCenteralPoint()));
@@ -120,7 +121,7 @@ void ImageDisplay::queryStatus()
 
         //获得磁珠的中心和半径(缩小尺寸下)
         imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
-        cv::circle(frameShow, magent_center, magent_radius, CV_RGB(255, 0, 0), 1);
+        
 
         emit emit_showFrame();
         emit emit_saveVideo();
@@ -139,6 +140,15 @@ void ImageDisplay::slot_showFrame()
     if (flag_drawTarget)
     {
         cv::circle(frameShow, target_center, magent_radius, CV_RGB(0, 0, 255), 1);
+    }
+    if (flag_locatemag)
+    {
+        cv::circle(frameShow, magent_center, magent_radius, CV_RGB(255, 0, 0), 1);
+
+        
+        QString magentCoor = "(" + QString::number(magent_center.y,'f', 0) + "," + QString::number(magent_center.x, 'f', 0) + ")";
+
+        ui.magentCoor->setText(magentCoor);
     }
 
     
@@ -253,6 +263,18 @@ void ImageDisplay::stopdrawTargetPoint()
 {
     flag_drawTarget = false;
 }
+
+void ImageDisplay::startLocateMag()
+{
+    flag_locatemag = true;
+}
+
+void ImageDisplay::stopLocateMag()
+{
+    flag_locatemag = false;
+}
+
+
 
 void ImageDisplay::OnMouse(int event, int x, int y, int flags, void* param)
 {
