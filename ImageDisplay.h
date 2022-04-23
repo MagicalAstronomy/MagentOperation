@@ -47,8 +47,11 @@ private:
 	ImageProcessing* imageprocessing;
 
 	//得到单个磁珠在原图像中的坐标位置和半径
-	cv::Point2f magent_center;
-	float magent_radius;
+	cv::Point2f magent_center = cv::Point2f(0,0);
+	float magent_radius = 1;
+
+	bool flag_drawCenteral = false;
+	bool flag_drawTarget = false;
 
 
 	//鼠标所在位置点坐标，初始化为0
@@ -71,6 +74,10 @@ private slots:
 	void saveVideoOff();	//停止保存视频
 	void slot_showFrame();	//在程序中展示帧的槽函数
 	void slot_saveVideo();	//保存视频的槽函数
+	void drawCenteralPoint(); //在图像中心点处绘制圆形目标区域
+	void drawTargetPoint();	//在指定目标点处绘制圆形目标区域
+	void stopdrawCenteralPoint();	//停止绘制中心点圆形
+	void stopdrawTargetPoint();		//停止绘制目标点圆形
 
 
 

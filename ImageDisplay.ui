@@ -143,6 +143,156 @@
     <string>保存视频：</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="startLocateMag">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>570</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>开始定位磁珠</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pathTip2_2">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>580</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>当前位置：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="magentCoor">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>580</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="stopLocateMag">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>570</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>结束定位磁珠</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="drawCenteralPoint">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>640</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>绘制中心点</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pathTip2_3">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>640</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>x（高）：</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="drawTargetPoint">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>640</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>绘制目标点</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pathTip2_4">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>660</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>y（宽）：</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="target_x">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>640</y>
+     <width>60</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="target_y">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>660</y>
+     <width>60</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="stopdrawCenteralPoint">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>690</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>停止绘制</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="stopdrawTargetPoint">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>690</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>停止绘制</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
