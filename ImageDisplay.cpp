@@ -135,7 +135,7 @@ void ImageDisplay::slot_showFrame()
     
     if (flag_drawCenteral)
     {
-        cv::circle(frameShow, cv::Point(frameShow.cols/2, frameShow.rows / 2), magent_radius, CV_RGB(0, 0, 255), 1);
+        cv::circle(frameShow, target_center, magent_radius, CV_RGB(0, 0, 255), 1);
     }
     if (flag_drawTarget)
     {
@@ -237,6 +237,7 @@ void ImageDisplay::saveVideoOff()
 
 void ImageDisplay::drawCenteralPoint()
 {
+    target_center = cv::Point(frameShow.cols / 2, frameShow.rows / 2);
     flag_drawCenteral = true;
 }
 
