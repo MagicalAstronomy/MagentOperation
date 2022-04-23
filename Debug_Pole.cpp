@@ -96,3 +96,22 @@ void Debug_Pole::inputCurrent()	//产生指定电流 北->0x02 ;南->0x09 ; 东->0x05 ;西
 	serialportcommunication->writeCurrent(currentValue[2], 0x05);
 	serialportcommunication->writeCurrent(currentValue[3], 0x03); 
 }
+
+void Debug_Pole::slot_feedback(float* coor)
+{
+
+	/*int64 endtime = cv::getTickCount();
+
+	float time = (endtime - t) / cv::getTickFrequency();
+	
+	qDebug() << QString::number(time, 'f', 6);*/
+
+
+	/*传回的数据为四个float变量，分别是当前磁珠的x和y，目标点的x和y。其中x是横轴，y是纵轴*/
+	currentMag[0] = coor[0];
+	currentMag[1] = coor[1];
+	targetMag[0] = coor[2];
+	targetMag[1] = coor[3];
+	//qDebug() << QString::number(currentMag[0], 'f', 2) << ',' << QString::number(currentMag[1], 'f', 2) << ',' << QString::number(targetMag[0], 'f', 2) << ',' << QString::number(targetMag[1], 'f', 2);
+
+}

@@ -122,7 +122,11 @@ void ImageDisplay::queryStatus()
         //获得磁珠的中心和半径(缩小尺寸下)
         imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
         
-
+        coor[0] = magent_center.x * 4;
+        coor[1] = magent_center.y * 4;
+        coor[2] = target_center.x * 4;
+        coor[3] = target_center.y * 4;
+        emit emit_feedback(coor);
         emit emit_showFrame();
         emit emit_saveVideo();
         

@@ -54,7 +54,7 @@ private:
 	bool flag_drawTarget = false;
 	bool flag_locatemag = false;
 	cv::Point2f target_center = cv::Point2f(0, 0);
-
+	float coor[4] = { 0,0,0,0 };	//传递当前坐标与目标坐标给控制窗口的数组
 
 	//鼠标所在位置点坐标，初始化为0
 	int mouse_x = 0, mouse_y = 0;
@@ -65,6 +65,7 @@ private:
 signals:
 	void emit_showFrame();	//在程序中展示帧的信号
 	void emit_saveVideo();	//保存视频的信号
+	void emit_feedback(float*);	//得到的磁珠中点和目标点传递给控制子窗口
 
 //自定义槽函数
 private slots:

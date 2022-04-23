@@ -29,6 +29,12 @@ void MainInterface::showUI()
 	//由于构造函数执行时尚未选择模式，因此通过选择的模式决定画面的代码不能放在构造函数中，可以放在显示界面时
 	this->chooseUI();
 
+	//从图像显示窗口向控制窗口传输数据
+	if (g_module == DEBUG && g_config == FOURPOLE)
+	{
+		connect(imagedisplay, SIGNAL(emit_feedback(float*)), debug_pole, SLOT(slot_feedback(float*)));
+	}
+
 	
 
 	this->setLayout(hlayout);
