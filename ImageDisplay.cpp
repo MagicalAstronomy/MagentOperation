@@ -120,7 +120,7 @@ void ImageDisplay::queryStatus()
         cv::resize(frame, frameShow, cv::Size(0, 0), 0.25, 0.25,cv::INTER_NEAREST);
 
         //获得磁珠的中心和半径(缩小尺寸下)
-        imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
+        //imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
         
         coor[0] = magent_center.x * 4;
         coor[1] = magent_center.y * 4;
@@ -147,6 +147,8 @@ void ImageDisplay::slot_showFrame()
     }
     if (flag_locatemag)
     {
+        imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
+
         cv::circle(frameShow, magent_center, magent_radius, CV_RGB(255, 0, 0), 1);
 
         

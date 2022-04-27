@@ -163,7 +163,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>东：</string>
+     <string>南：</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_6">
@@ -189,7 +189,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>南：</string>
+     <string>西：</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">
@@ -202,7 +202,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>西：</string>
+     <string>东：</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_9">

@@ -150,14 +150,28 @@ void SerialPortCommunication::readReady()
 
 void SerialPortCommunication::writeCurrent(float value, int channel)
 {
-	if((!modbusObj) || ((value*100 - floor(value*100)) >0) || (abs(value * 100) >2000) )	//由于这里正常情况下一定等于0，因此可以对浮点判断用>0，其他情况下最好用1e-5
-	{ 
-		qDebug("串口尚未打开，或输入电流精度在小数点后三位以上，或输入电流过大！");
+	qDebug() << "通道" << channel << "写入电流值为：" << value << "精度计算：" << (value * 100 - floor(value * 100));
+
+
+
+	//if((!modbusObj) || (abs(value*100 - floor(value*100)) > 0.09) || (abs(value * 100) >2000) )	//由于这里正常情况下一定等于0，因此可以对浮点判断用>0，其他情况下最好用1e-5
+	//{ 
+	//	qDebug("串口尚未打开，或输入电流精度在小数点后三位以上，或输入电流过大！");
+	//	return;
+	//}
+
+
+	/*把对是否精度在小数点后三位的判断去掉，输入三位后的自动舍去*/
+	if ((!modbusObj) || (abs(value * 100) > 2000))	//由于这里正常情况下一定等于0，因此可以对浮点判断用>0，其他情况下最好用1e-5
+	{
+		qDebug("串口尚未打开，或输入电流过大！");
 		return;
 	}
 
 	QModbusDataUnit writeUnit(QModbusDataUnit::HoldingRegisters, 0x0040, 1);
-	writeUnit.setValue(0, floor(value*100));	//传输数据的index为0，向下取整确保输入是-2000~2000数
+
+	//setvalue的第二个参数是quint16，如果输入浮点数就不好了
+	writeUnit.setValue(0, int(floor(value*100)));	//传输数据的index为0，向下取整确保输入是-2000~2000数
 
 	if (auto* reply = modbusObj->sendWriteRequest(writeUnit, channel))
 	{

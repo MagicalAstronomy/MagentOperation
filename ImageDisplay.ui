@@ -179,7 +179,7 @@
     </rect>
    </property>
    <property name="text">
-    <string/>
+    <string>(x,y)</string>
    </property>
   </widget>
   <widget class="QPushButton" name="stopLocateMag">

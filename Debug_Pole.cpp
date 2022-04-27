@@ -86,11 +86,18 @@ void Debug_Pole::inputCurrent()	//产生指定电流 北->0x02 ;南->0x09 ; 东->0x05 ;西
 	//已成功
 	//serialportcommunication->writeCurrent(2.0, 0x02);
 	
+	//currentValue[0] = ui.current_east->text().toFloat();
+	//currentValue[1] = -1 * ui.current_north->text().toFloat();	//如此输入，则南北两侧通入同号的电流在中间磁场值为0
+	//currentValue[2] = ui.current_south->text().toFloat();
+	//currentValue[3] = -1 * ui.current_west->text().toFloat();	//如此输入，则东西两侧通入同号的电流在中间磁场值为0
+
+	//暂时不考虑两侧同时同磁场的情况
 	currentValue[0] = ui.current_east->text().toFloat();
-	currentValue[1] = -1 * ui.current_north->text().toFloat();	//如此输入，则南北两侧通入同号的电流在中间磁场值为0
+	currentValue[1] = ui.current_north->text().toFloat();
 	currentValue[2] = ui.current_south->text().toFloat();
-	currentValue[3] = -1 * ui.current_west->text().toFloat();	//如此输入，则东西两侧通入同号的电流在中间磁场值为0
-	qDebug() << currentValue[0];
+	currentValue[3] = ui.current_west->text().toFloat();
+
+	//qDebug() << currentValue[0];
 	serialportcommunication->writeCurrent(currentValue[0], 0x02);
 	serialportcommunication->writeCurrent(currentValue[1], 0x09);
 	serialportcommunication->writeCurrent(currentValue[2], 0x05);
