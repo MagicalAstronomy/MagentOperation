@@ -10,6 +10,7 @@
 #include <opencv2/opencv.hpp>
 
 
+
 class Debug_Pole : public QWidget
 {
 	Q_OBJECT

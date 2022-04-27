@@ -81,7 +81,9 @@ void Debug_Pole::inputCurrent()	//产生指定电流 北->0x02 ;南->0x09 ; 东->0x05 ;西
 {
 	//测试读取数据是否成功时借用此按钮实现
 	//已成功
-	serialportcommunication->readControlMode();
+	//serialportcommunication->readControlMode();
+
+	
 	//测试点击按钮给固定的电流值
 	//已成功
 	//serialportcommunication->writeCurrent(2.0, 0x02);
