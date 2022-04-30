@@ -10,7 +10,7 @@ ImageProcessing::~ImageProcessing()
 {
 }
 
-void ImageProcessing::locateMagnet(cv::Mat img, cv::Point2f& center, float& radius)
+void ImageProcessing::locateMagnet(cv::Mat img, cv::Point2f& center, float& radius, int magType)
 {
 	int64 starttime = cv::getTickCount();
 
@@ -43,8 +43,11 @@ void ImageProcessing::locateMagnet(cv::Mat img, cv::Point2f& center, float& radi
 			max_index = i;
 		}
 	}
-
-	cv::minEnclosingCircle(contours.at(max_index), center, radius);
+	if (magType)	//¥≈÷ÈŒ™«ÚÃÂ ±
+	{
+		cv::minEnclosingCircle(contours.at(max_index), center, radius);
+	}
+	
 
 	
 

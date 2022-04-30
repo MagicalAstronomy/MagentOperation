@@ -54,7 +54,7 @@ private:
 	//得到单个磁珠在原图像中的坐标位置和半径，如果是圆柱体则还有角度
 	cv::Point2f magent_center = cv::Point2f(0,0);
 	float magent_radius = 1;
-	float angle = 0;
+	float angle = -1;	//球体默认角度为-1
 
 	bool flag_drawCenteral = false;
 	bool flag_drawTarget = false;
