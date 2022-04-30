@@ -15,6 +15,7 @@ public:
 	~ImageProcessing();
 
 	void locateMagnet(cv::Mat img, cv::Point2f& center, float& radius);		//假设只有一个球形的磁性微粒，找到中点和半径
+	void locateMagnet(cv::Mat img, cv::RotatedRect& mag);	//圆柱形磁粒处理
 
 private:
 

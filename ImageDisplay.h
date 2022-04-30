@@ -54,7 +54,8 @@ private:
 	//得到单个磁珠在原图像中的坐标位置和半径，如果是圆柱体则还有角度
 	cv::Point2f magent_center = cv::Point2f(0,0);
 	float magent_radius = 1;
-	float angle = -1;	//球体默认角度为-1
+	float angle = 360;	//由于圆柱体角度可以为-90到0，球体默认角度为360
+	cv::RotatedRect columnMag;
 
 	bool flag_drawCenteral = false;
 	bool flag_drawTarget = false;
@@ -85,7 +86,7 @@ private slots:
 	void slot_saveVideo();	//保存视频的槽函数
 	void setMagSphere();	//设定微粒为球体
 	void setMagColumn();	//设定微粒为圆柱体
-	void drawCenteralPoint(); //在图像中心点处绘制圆形目标区域
+	void drawCenteralPoint(); //在图像中心点处绘制圆形目标区域	如果是圆柱体则绘制中心点
 	void drawTargetPoint();	//在指定目标点处绘制圆形目标区域
 	void stopdrawCenteralPoint();	//停止绘制中心点圆形
 	void stopdrawTargetPoint();		//停止绘制目标点圆形

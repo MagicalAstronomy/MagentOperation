@@ -123,11 +123,28 @@ void ImageDisplay::queryStatus()
         //使用最近邻插值加速放缩，会消耗11ms左右
         cv::resize(frame, frameShow, cv::Size(0, 0), 0.25, 0.25,cv::INTER_NEAREST);
 
+        if (flag_locatemag)
+        {
+            if (magType)
+            {
+                imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
+
+                coor[0] = magent_center.x * 4;
+                coor[1] = magent_center.y * 4;
+            }
+            else
+            {
+                imageprocessing->locateMagnet(frameShow, columnMag);
+
+                coor[0] = columnMag.center.x * 4;
+                coor[1] = columnMag.center.y * 4;
+            }
+        }
+
         //获得磁珠的中心和半径(缩小尺寸下)
         //imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
         
-        coor[0] = magent_center.x * 4;
-        coor[1] = magent_center.y * 4;
+        
         coor[2] = target_center.x * 4;
         coor[3] = target_center.y * 4;
         emit emit_feedback(coor);
@@ -145,7 +162,7 @@ void ImageDisplay::slot_showFrame()
 
         if (flag_locatemag)
         {
-            imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
+            
 
             cv::circle(frameShow, magent_center, magent_radius, CV_RGB(255, 0, 0), 1);
 
@@ -166,6 +183,31 @@ void ImageDisplay::slot_showFrame()
             cv::circle(frameShow, target_center, magent_radius, CV_RGB(0, 0, 255), 1);
         }
 
+    }
+    else
+    {
+        if (flag_locatemag)
+        {
+
+
+            cv::circle(frameShow, columnMag.center, 2, CV_RGB(255, 0, 0), -1);
+
+
+            QString magentCoor = "(" + QString::number(columnMag.center.y, 'f', 0) + "," + QString::number(columnMag.center.x, 'f', 0) + ")";
+
+            ui.magentCoor->setText(magentCoor);
+        }
+
+
+        //画圆放在图像处理前面会干扰得到的结果！！
+        if (flag_drawCenteral)
+        {
+            cv::circle(frameShow, target_center, 2, CV_RGB(0, 0, 255), -1);
+        }
+        if (flag_drawTarget)
+        {
+            cv::circle(frameShow, target_center, 2, CV_RGB(0, 0, 255), -1);
+        }
     }
 
     cv::imshow(winName, frameShow);

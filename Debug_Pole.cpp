@@ -54,6 +54,7 @@ void Debug_Pole::ontimeout()
 			
 		}
 	}
+	//qDebug() << currentMag[0] << "," << currentMag[1];
 }
 
 
