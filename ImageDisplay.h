@@ -13,6 +13,9 @@
 #include "Cam.h"
 #include "ImageProcessing.h"
 
+constexpr int COLUMN = 0;
+constexpr int SPHERE = 1;
+
 class ImageDisplay : public QWidget
 {
 	Q_OBJECT
@@ -46,9 +49,12 @@ private:
 	Cam* cam;
 	ImageProcessing* imageprocessing;
 
-	//得到单个磁珠在原图像中的坐标位置和半径
+	int magType = COLUMN;	//初始化微粒为圆柱体
+
+	//得到单个磁珠在原图像中的坐标位置和半径，如果是圆柱体则还有角度
 	cv::Point2f magent_center = cv::Point2f(0,0);
 	float magent_radius = 1;
+	float angle = 0;
 
 	bool flag_drawCenteral = false;
 	bool flag_drawTarget = false;
@@ -77,6 +83,8 @@ private slots:
 	void saveVideoOff();	//停止保存视频
 	void slot_showFrame();	//在程序中展示帧的槽函数
 	void slot_saveVideo();	//保存视频的槽函数
+	void setMagSphere();	//设定微粒为球体
+	void setMagColumn();	//设定微粒为圆柱体
 	void drawCenteralPoint(); //在图像中心点处绘制圆形目标区域
 	void drawTargetPoint();	//在指定目标点处绘制圆形目标区域
 	void stopdrawCenteralPoint();	//停止绘制中心点圆形

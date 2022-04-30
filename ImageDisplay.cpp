@@ -51,6 +51,10 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     connect(ui.drawTargetPoint, SIGNAL(clicked()), this, SLOT(drawTargetPoint()));
     connect(ui.stopdrawTargetPoint, SIGNAL(clicked()), this, SLOT(stopdrawTargetPoint()));
 
+    //选择磁珠类型使能
+    connect(ui.setMagSphere, SIGNAL(clicked()), this, SLOT(setMagSphere()));
+    connect(ui.setMagColumn, SIGNAL(clicked()), this, SLOT(setMagColumn()));
+
     //capture = cv::VideoCapture(0);
     //上下两种方式都可以打开摄像头
     
@@ -280,6 +284,20 @@ void ImageDisplay::stopLocateMag()
 {
     flag_locatemag = false;
 }
+
+void ImageDisplay::setMagSphere()
+{
+    magType = SPHERE;
+
+}
+
+void ImageDisplay::setMagColumn()
+{
+    magType = COLUMN;
+
+}
+
+
 
 
 
