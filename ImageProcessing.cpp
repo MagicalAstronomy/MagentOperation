@@ -10,7 +10,7 @@ ImageProcessing::~ImageProcessing()
 {
 }
 
-void ImageProcessing::locateMagnet(cv::Mat img, cv::Point2f& center, float& radius, int magType)
+void ImageProcessing::locateMagnet(cv::Mat img, cv::Point2f& center, float& radius)
 {
 	int64 starttime = cv::getTickCount();
 
@@ -43,10 +43,11 @@ void ImageProcessing::locateMagnet(cv::Mat img, cv::Point2f& center, float& radi
 			max_index = i;
 		}
 	}
-	if (magType)	//´ÅÖéÎªÇòÌåÊ±
-	{
+
 		cv::minEnclosingCircle(contours.at(max_index), center, radius);
-	}
+
+
+
 	
 
 	

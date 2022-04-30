@@ -140,30 +140,33 @@ void ImageDisplay::queryStatus()
 
 void ImageDisplay::slot_showFrame()
 {
-    
-    
-    if (flag_locatemag)
+    if (magType)
     {
-        imageprocessing->locateMagnet(frameShow, magent_center, magent_radius, magType);
 
-        cv::circle(frameShow, magent_center, magent_radius, CV_RGB(255, 0, 0), 1);
+        if (flag_locatemag)
+        {
+            imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
 
-        
-        QString magentCoor = "(" + QString::number(magent_center.y,'f', 0) + "," + QString::number(magent_center.x, 'f', 0) + ")";
+            cv::circle(frameShow, magent_center, magent_radius, CV_RGB(255, 0, 0), 1);
 
-        ui.magentCoor->setText(magentCoor);
+
+            QString magentCoor = "(" + QString::number(magent_center.y, 'f', 0) + "," + QString::number(magent_center.x, 'f', 0) + ")";
+
+            ui.magentCoor->setText(magentCoor);
+        }
+
+
+        //画圆放在图像处理前面会干扰得到的结果！！
+        if (flag_drawCenteral)
+        {
+            cv::circle(frameShow, target_center, magent_radius, CV_RGB(0, 0, 255), 1);
+        }
+        if (flag_drawTarget)
+        {
+            cv::circle(frameShow, target_center, magent_radius, CV_RGB(0, 0, 255), 1);
+        }
+
     }
-    //画圆放在图像处理前面会干扰得到的结果！！
-    if (flag_drawCenteral)
-    {
-        cv::circle(frameShow, target_center, magent_radius, CV_RGB(0, 0, 255), 1);
-    }
-    if (flag_drawTarget)
-    {
-        cv::circle(frameShow, target_center, magent_radius, CV_RGB(0, 0, 255), 1);
-    }
-
-    
 
     cv::imshow(winName, frameShow);
 
