@@ -264,154 +264,108 @@
      <x>10</x>
      <y>380</y>
      <width>231</width>
-     <height>381</height>
+     <height>91</height>
     </rect>
    </property>
    <property name="title">
-    <string>磁场标定</string>
+    <string>逆时针旋转磁场</string>
    </property>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>211</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>输入单侧标准电流</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>100</y>
-      <width>211</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>输入对向电流</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>190</y>
-      <width>113</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLineEdit" name="spinFrequency">
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>160</y>
-      <width>54</width>
-      <height>12</height>
+      <y>30</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="startSpin">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>20</y>
+      <width>41</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>记录磁场</string>
+     <string>开始</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>190</y>
-      <width>54</width>
-      <height>12</height>
+      <x>20</x>
+      <y>30</y>
+      <width>61</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>x轴位置：</string>
+     <string>旋转频率：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_17">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>30</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hz</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="stopSpin">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>20</y>
+      <width>41</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>停止</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>230</y>
-      <width>54</width>
-      <height>12</height>
+      <x>20</x>
+      <y>60</y>
+      <width>61</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>y轴位置：</string>
+     <string>电流极值：</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_15">
+   <widget class="QLineEdit" name="spinCurrent">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>270</y>
-      <width>54</width>
-      <height>12</height>
+      <x>80</x>
+      <y>60</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_18">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>60</y>
+      <width>21</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>x轴强度：</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_16">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>300</y>
-      <width>54</width>
-      <height>12</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>y轴强度：</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>230</y>
-      <width>113</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>270</y>
-      <width>113</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>310</y>
-      <width>113</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>340</y>
-      <width>211</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>数据记录</string>
+     <string>A</string>
     </property>
    </widget>
   </widget>

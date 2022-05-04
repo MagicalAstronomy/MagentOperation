@@ -150,7 +150,7 @@ void SerialPortCommunication::readReady()
 
 void SerialPortCommunication::writeCurrent(float value, int channel)
 {
-	qDebug() << "通道" << channel << "写入电流值为：" << value << "精度计算：" << (value * 100 - floor(value * 100));
+	//qDebug() << "通道" << channel << "写入电流值为：" << value << "精度计算：" << (value * 100 - floor(value * 100));
 
 
 

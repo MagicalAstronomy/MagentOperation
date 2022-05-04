@@ -11,13 +11,31 @@ Debug_Pole::Debug_Pole(QWidget *parent)
 
 	spRefreshTimer->setInterval(1000);
 
+	/*刷新串口信息定时器使能*/
 	connect(spRefreshTimer, SIGNAL(timeout()), this, SLOT(ontimeout()));
 
 	spRefreshTimer->start();
 
+	/*旋转磁场定时器使能*/
+	spinMagTimer = new QTimer(this);
+	spinMagTimer->setInterval(spinControlCycle);
+	connect(spinMagTimer, SIGNAL(timeout()), this, SLOT(spinMagOutput()));
+	
 
+	
+	/*开启串口使能*/
 	connect(ui.openCom, SIGNAL(clicked()), this, SLOT(changeCom()));
+
+	/*输入电流调试使能*/
 	connect(ui.inputCurrent, SIGNAL(clicked()), this, SLOT(inputCurrent()));
+
+	/*旋转磁场调试开始和关闭使能*/
+	connect(ui.startSpin, SIGNAL(clicked()), this, SLOT(startSpin()));
+	connect(ui.stopSpin, SIGNAL(clicked()), this, SLOT(stopSpin()));
+
+	/*输出电流使能*/
+	connect(this, SIGNAL(emit_writeCurrent()), this, SLOT(slot_writeCurrent()));
+
 
 	currentValue = new float[4]();	//数组值初始化为0
 
@@ -101,10 +119,53 @@ void Debug_Pole::inputCurrent()	//产生指定电流 北->0x02 ;南->0x09 ; 东->0x05 ;西
 	currentValue[3] = ui.current_west->text().toFloat();
 
 	//qDebug() << currentValue[0];
-	serialportcommunication->writeCurrent(currentValue[0], 0x02);
-	serialportcommunication->writeCurrent(currentValue[1], 0x09);
-	serialportcommunication->writeCurrent(currentValue[2], 0x05);
-	serialportcommunication->writeCurrent(currentValue[3], 0x03); 
+	serialportcommunication->writeCurrent(currentValue[0], 0x02);	//修改后为南
+	serialportcommunication->writeCurrent(currentValue[1], 0x09);	//修改后为北
+	serialportcommunication->writeCurrent(currentValue[2], 0x05);	//修改后为西
+	serialportcommunication->writeCurrent(currentValue[3], 0x03);	//修改后为东
+}
+
+void Debug_Pole::startSpin()
+{
+	/*初始化磁场*/
+	currentValue[0] = 0;
+	currentValue[1] = 0;
+	currentValue[2] = 0;
+	currentValue[3] = 0;
+	
+	spinCurrent = ui.spinCurrent->text().toFloat();
+	spinFrequency = ui.spinFrequency->text().toFloat();
+	rad = 2 * PI * spinFrequency * spinControlCycle / 1000;	//得到每次操作需要转的弧度
+	//qDebug() << rad;
+	
+
+
+	if (spinCurrent > 0.0099 && spinFrequency <= 10)	//数据合法则可以开始
+	{
+		spinMagTimer->start();
+	}
+	else
+	{
+		qDebug() << "输入不在允许范围内";
+	}
+	
+
+
+	
+}
+
+void Debug_Pole::stopSpin()
+{
+
+
+	spinMagTimer->stop();
+
+	/*停止移动*/
+	currentValue[0] = 0;
+	currentValue[1] = 0;
+	currentValue[2] = 0;
+	currentValue[3] = 0;
+	emit emit_writeCurrent();
 }
 
 void Debug_Pole::slot_feedback(float* coor)
@@ -123,5 +184,94 @@ void Debug_Pole::slot_feedback(float* coor)
 	targetMag[0] = coor[2];
 	targetMag[1] = coor[3];
 	//qDebug() << QString::number(currentMag[0], 'f', 2) << ',' << QString::number(currentMag[1], 'f', 2) << ',' << QString::number(targetMag[0], 'f', 2) << ',' << QString::number(targetMag[1], 'f', 2);
+
+}
+
+void Debug_Pole::slot_writeCurrent()
+{
+	/*目前按照南北西东的顺序发送数组中的四个值
+	保证每个方向用磁强计的突出那面测都显示为N，将北和东两路的磁场反向，让旋转磁场能顺利给出*/
+	serialportcommunication->writeCurrent(currentValue[0], 0x02);	//修改后为南
+	serialportcommunication->writeCurrent(-1 * currentValue[1], 0x09);	//修改后为北
+	serialportcommunication->writeCurrent(currentValue[2], 0x05);	//修改后为西
+	serialportcommunication->writeCurrent( -1 * currentValue[3], 0x03);	//修改后为东
+	
+
+}
+
+void Debug_Pole::spinMagOutput()
+{
+	
+	float preRad;
+	float x, y, newx, newy;
+
+	/*全为0时 从北边开始*/
+	if ((currentValue[0] < 1e-4) && (currentValue[1] < 1e-4) && (currentValue[2] < 1e-4) && (currentValue[3] < 1e-4))
+	{
+		currentValue[1] = spinCurrent;
+	}
+	/*否则使用arctan判断当前方向，并增加指定角度后重新设定电流值*/
+	else
+	{
+
+		/*虽然左右/东西两边不完全相等，但旋转磁场开始时已经初始化过，能最大程度避免相对两边都有电流情况，直接相减就能得到方向*/
+		y = currentValue[1] - currentValue[0];	//纵坐标
+		x = currentValue[3] - currentValue[2];	//横坐标
+
+		//qDebug() << "x:" << abs(x) << "y:" << y;
+		/*虽然浮点数有精度限制应该不会，但还是判断一下旋转到纵轴上的情况，避免arctan除零*/
+		if (abs(x) < 1e-4)
+		{
+			if (y > 0)
+			{
+				preRad = PI / 2;
+			}
+			else
+			{
+				preRad = -PI / 2;
+			}
+		}
+		else if(x > 0)	//14象限arctan直接原值不动即可
+		{
+			preRad = atan(y / x);
+			
+		}
+		else    //23象限arctan值需要加180°
+		{
+			preRad = atan(y / x) + PI;
+			//qDebug() << "preRad:" << preRad << "Rad:" << rad;
+		}
+
+		newx = cos(preRad + rad) * spinCurrent;
+		newy = sin(preRad + rad) * spinCurrent;
+		if (newx > 0)
+		{
+			currentValue[3] = newx;
+			currentValue[2] = 0;
+		}
+		else
+		{
+			currentValue[2] = abs(newx);
+			currentValue[3] = 0;
+		}
+		if (newy > 0)
+		{
+			currentValue[1] = newy;
+			currentValue[0] = 0;
+		}
+		else
+		{
+			currentValue[0] = abs(newy);
+			currentValue[1] = 0;
+		}
+		qDebug() << "当前北侧电流：" << currentValue[1];
+		qDebug() << "当前南侧电流：" << currentValue[0];
+		qDebug() << "当前西侧电流：" << currentValue[2];
+		qDebug() << "当前东侧电流：" << currentValue[3];
+		qDebug() << "*******";
+
+	}
+	/*发送输出电流的信号*/
+	emit emit_writeCurrent();
 
 }
