@@ -352,8 +352,8 @@ void ImageDisplay::OnMouse(int event, int x, int y, int flags, void* param)
 {
     if (event == cv::EVENT_MOUSEMOVE)
     {
-        QString str_x = QString::number(x * 4);
-        QString str_y = QString::number(y * 4);
+        QString str_x = QString::number(x);
+        QString str_y = QString::number(y);
         QString coorOutput = "(" + str_y + "," + str_x + ")";
 
         (*(Ui::ImageDisplay * )param).Coordinate->setText(coorOutput);
