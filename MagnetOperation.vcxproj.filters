@@ -64,6 +64,9 @@
     <ClCompile Include="ImageProcessing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Debug_Helmholtz.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Settings.h">
@@ -92,6 +95,9 @@
     <QtMoc Include="SerialPortCommunication.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="Debug_Helmholtz.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainInterface.ui">
@@ -101,6 +107,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="Debug_Pole.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Debug_Helmholtz.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

@@ -165,6 +165,7 @@ void Debug_Pole::stopSpin()
 	currentValue[1] = 0;
 	currentValue[2] = 0;
 	currentValue[3] = 0;
+	qDebug() << "Í£Ö¹Ðý×ª";
 	emit emit_writeCurrent();
 }
 

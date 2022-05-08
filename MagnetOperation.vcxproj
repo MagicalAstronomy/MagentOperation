@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClCompile Include="Cam.cpp" />
     <ClCompile Include="DahengDriver.cpp" />
+    <ClCompile Include="Debug_Helmholtz.cpp" />
     <ClCompile Include="Debug_Pole.cpp" />
     <ClCompile Include="ImageProcessing.cpp" />
     <ClCompile Include="MainInterface.cpp" />
@@ -96,6 +97,7 @@
     <ClCompile Include="SerialPortCommunication.cpp" />
     <ClCompile Include="Settings.cpp" />
     <QtRcc Include="MagnetOperation.qrc" />
+    <QtUic Include="Debug_Helmholtz.ui" />
     <QtUic Include="Debug_Pole.ui" />
     <QtUic Include="MainInterface.ui" />
     <QtUic Include="ImageDisplay.ui" />
@@ -111,6 +113,7 @@
     <QtMoc Include="SerialPortCommunication.h" />
     <ClInclude Include="Cam.h" />
     <ClInclude Include="DahengDriver.h" />
+    <QtMoc Include="Debug_Helmholtz.h" />
     <ClInclude Include="ImageProcessing.h" />
     <ClInclude Include="Settings.h" />
   </ItemGroup>

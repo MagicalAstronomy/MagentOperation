@@ -73,7 +73,8 @@ void MainInterface::chooseUI()
 		case HELMHOLTZ:
 		{
 			qDebug("显示亥姆霍兹调试界面");
-			//TODO:这种界面编写和调用
+			debug_helmholtz = new Debug_Helmholtz();
+			hlayout->addWidget(debug_helmholtz, 1);
 			break;
 		}
 		case OCTOMAG:

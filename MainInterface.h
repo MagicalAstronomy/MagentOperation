@@ -7,6 +7,7 @@
 #include "Login.h"
 #include "ImageDisplay.h"
 #include "Debug_Pole.h"
+#include "Debug_Helmholtz.h"
 
 class MainInterface : public QWidget
 {
@@ -28,6 +29,8 @@ private:
 
 	//TODO:其他种类界面补完
 	Debug_Pole* debug_pole;
+	Debug_Helmholtz* debug_helmholtz;
+
 
 	//void initUI();
 
