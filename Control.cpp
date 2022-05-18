@@ -16,6 +16,8 @@ Control::~Control()
 {
 }
 
+
+
 float Control::calcRadByCoor(float x, float y)
 {
 	double l = std::sqrt(x * x + y * y);
@@ -149,4 +151,11 @@ float* Control::pidLocationControl(float* cur, float* tar)
 	}
 
 	return u;
+}
+
+void Control::setParam(float p, float i, float d)
+{
+	this->kp = p;
+	this->ki = i;
+	this->kd = d;
 }

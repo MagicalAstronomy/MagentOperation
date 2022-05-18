@@ -309,6 +309,7 @@ void Debug_Pole::spinMagOutput()
 
 void Debug_Pole::startPositionControl()
 {
+	control->setParam(ui.setKP->text().toFloat(), ui.setKI->text().toFloat(), ui.setKD->text().toFloat());
 	flag_positionControl = true;
 }
 

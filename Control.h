@@ -22,6 +22,7 @@ public:
 
 	float* pidLocationControl(float* cur,float* tar);	//对四个轴的控制量进行解算并输出,数据格式与四极控制程序保存目标和当前位置格式相同
 	void resetControl();	//清零误差和控制量数组
+	void setParam(float p,float i,float d);	//配置pid参数
 
 private:
 
@@ -35,7 +36,7 @@ private:
 	float e_2[4] = { 0,0,0,0 };	//再上一步误差
 
 	/*pid控制变量*/
-	float kp = 0.0005;
+	float kp = 0.001;
 	float ki = 0;
 	float kd = 0;
 	float u[4] = {0,0,0,0};	//增量算法的控制量
