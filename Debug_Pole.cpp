@@ -42,6 +42,14 @@ Debug_Pole::Debug_Pole(QWidget *parent)
 	connect(ui.stopPositionControl, SIGNAL(clicked()), this, SLOT(stopPositionControl()));
 
 
+
+	connect(this, SIGNAL(emit_writeCurrent02()), this, SLOT(slot_writeCurrent02()));
+	connect(this, SIGNAL(emit_writeCurrent03()), this, SLOT(slot_writeCurrent03()));
+	connect(this, SIGNAL(emit_writeCurrent05()), this, SLOT(slot_writeCurrent05()));
+	connect(this, SIGNAL(emit_writeCurrent09()), this, SLOT(slot_writeCurrent09()));
+
+
+
 	currentValue = new float[4]();	//数组值初始化为0
 
 
@@ -221,12 +229,38 @@ void Debug_Pole::slot_writeCurrent()
 void Debug_Pole::slot_writeCurrentNew()
 {
 	/*硬件接线上保证所有线圈在输入正向电流时,磁强计突起那边都显示为N，数组按顺序输出*/
-	serialportcommunication->writeCurrent(currentValue[0], 0x02);
+
+
+	/*serialportcommunication->writeCurrent(currentValue[0], 0x02);
 	serialportcommunication->writeCurrent(currentValue[1], 0x03);
 	serialportcommunication->writeCurrent(currentValue[2], 0x05);
+	serialportcommunication->writeCurrent(currentValue[3], 0x09);*/
+
+	//尝试分开多个线程给驱动器传电流来加速
+	
+	emit emit_writeCurrent02();
+	emit emit_writeCurrent03();
+	emit emit_writeCurrent05();
+	emit emit_writeCurrent09();
+
+
+}
+
+void Debug_Pole::slot_writeCurrent02()
+{
+	serialportcommunication->writeCurrent(currentValue[0], 0x02);
+}
+void Debug_Pole::slot_writeCurrent03()
+{
+	serialportcommunication->writeCurrent(currentValue[1], 0x03);
+}
+void Debug_Pole::slot_writeCurrent05()
+{
+	serialportcommunication->writeCurrent(currentValue[2], 0x05);
+}
+void Debug_Pole::slot_writeCurrent09()
+{
 	serialportcommunication->writeCurrent(currentValue[3], 0x09);
-
-
 }
 
 void Debug_Pole::spinMagOutput()

@@ -50,6 +50,13 @@ signals:
 	void emit_writeCurrent();
 
 
+
+	void emit_writeCurrent02();
+	void emit_writeCurrent03();
+	void emit_writeCurrent05();
+	void emit_writeCurrent09();
+
+
 private slots:
 	void ontimeout();   //定时器到指定值时触发槽函数刷新串口
 	void changeCom();
@@ -62,4 +69,10 @@ private slots:
 	void spinMagOutput();	//根据当前频率开始改变磁场方向并输出
 	void startPositionControl();	//开始位置闭环控制
 	void stopPositionControl();		//结束位置闭环控制
+
+
+	void slot_writeCurrent02();
+	void slot_writeCurrent03();
+	void slot_writeCurrent05();
+	void slot_writeCurrent09();
 };
