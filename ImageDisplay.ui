@@ -332,6 +332,58 @@
     <string>圆柱</string>
    </property>
   </widget>
+  <widget class="QLabel" name="pathTip1_4">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>540</y>
+     <width>231</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>保存当前位置和目标数据到 D:/Experiment</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pathTip1_5">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>560</y>
+     <width>61</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>周期100ms</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="saveTxtOn">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>560</y>
+     <width>71</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>开始保存</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="saveTxtOff">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>560</y>
+     <width>71</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>停止保存</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

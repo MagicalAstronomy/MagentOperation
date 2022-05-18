@@ -88,6 +88,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cam.cpp" />
+    <ClCompile Include="Control.cpp" />
     <ClCompile Include="DahengDriver.cpp" />
     <ClCompile Include="Debug_Helmholtz.cpp" />
     <ClCompile Include="Debug_Pole.cpp" />
@@ -112,6 +113,7 @@
     <QtMoc Include="Debug_Pole.h" />
     <QtMoc Include="SerialPortCommunication.h" />
     <ClInclude Include="Cam.h" />
+    <ClInclude Include="Control.h" />
     <ClInclude Include="DahengDriver.h" />
     <QtMoc Include="Debug_Helmholtz.h" />
     <ClInclude Include="ImageProcessing.h" />

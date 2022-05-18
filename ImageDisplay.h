@@ -13,6 +13,9 @@
 #include "Cam.h"
 #include "ImageProcessing.h"
 
+#include <fstream>
+
+
 constexpr int COLUMN = 0;
 constexpr int SPHERE = 1;
 
@@ -29,6 +32,9 @@ public:
 private:
 	Ui::ImageDisplay ui;
 	Ui::ImageDisplay* uiptr;
+
+	QTimer* RefreshTimer;	//查询是否有新帧的定时器
+	QTimer* saveTxtTimer;	//将数据写入文件的定时器
 	
 	/*
 	cv::VideoCapture capture;
@@ -46,6 +52,8 @@ private:
 	QString path;		//使用绝对路径表示存储位置
 	int counter = 0;
 
+	std::ofstream fout;	//txt数据文件对象
+
 	Cam* cam;
 	ImageProcessing* imageprocessing;
 
@@ -60,6 +68,7 @@ private:
 	bool flag_drawCenteral = false;
 	bool flag_drawTarget = false;
 	bool flag_locatemag = false;
+
 	cv::Point2f target_center = cv::Point2f(0, 0);
 	float coor[4] = { 0,0,0,0 };	//传递当前坐标与目标坐标给控制窗口的数组
 
@@ -92,6 +101,10 @@ private slots:
 	void stopdrawTargetPoint();		//停止绘制目标点圆形
 	void startLocateMag();		//开始绘制磁珠位置圆形
 	void stopLocateMag();		//结束绘制磁珠位置圆形
+	void saveTxtOn();		//开始将当前位置和目标位置保存到txt
+	void saveTxtOff();		//停止将当前位置和目标位置保存到txt
+	void slot_saveTxt();	//保存txt槽函数
+
 	
 
 

@@ -10,7 +10,7 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     cam = new Cam();
     imageprocessing = new ImageProcessing();
 
-    QTimer* RefreshTimer = new QTimer(this);
+    RefreshTimer = new QTimer(this);
 
     RefreshTimer->setTimerType(Qt::TimerType::PreciseTimer);
 
@@ -18,6 +18,11 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     RefreshTimer->setInterval(10);
     connect(RefreshTimer, SIGNAL(timeout()), this, SLOT(queryStatus()));
     RefreshTimer->start();
+
+    //保存数据定时器设置
+    saveTxtTimer = new QTimer(this);
+    saveTxtTimer->setInterval(100);
+    connect(saveTxtTimer, SIGNAL(timeout()), this, SLOT(slot_saveTxt()));
 
     //开始观察按钮使能
     connect(ui.startCapture, SIGNAL(clicked()), this, SLOT(startCapture()));
@@ -55,6 +60,10 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     connect(ui.setMagSphere, SIGNAL(clicked()), this, SLOT(setMagSphere()));
     connect(ui.setMagColumn, SIGNAL(clicked()), this, SLOT(setMagColumn()));
 
+    //开始与停止保存位置数据使能
+    connect(ui.saveTxtOn, SIGNAL(clicked()), this, SLOT(saveTxtOn()));
+    connect(ui.saveTxtOff, SIGNAL(clicked()), this, SLOT(saveTxtOff()));
+
     //capture = cv::VideoCapture(0);
     //上下两种方式都可以打开摄像头
     
@@ -79,6 +88,7 @@ ImageDisplay::ImageDisplay(QWidget *parent)
 
 ImageDisplay::~ImageDisplay()
 {
+    fout.close();   //销毁文件对象
 }
 
 void ImageDisplay::queryStatus()
@@ -129,15 +139,15 @@ void ImageDisplay::queryStatus()
             {
                 imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
 
-                coor[0] = magent_center.x * 4;
-                coor[1] = magent_center.y * 4;
+                coor[0] = magent_center.x;
+                coor[1] = magent_center.y;
             }
             else
             {
                 imageprocessing->locateMagnet(frameShow, columnMag);
 
-                coor[0] = columnMag.center.x * 4;
-                coor[1] = columnMag.center.y * 4;
+                coor[0] = columnMag.center.x;
+                coor[1] = columnMag.center.y;
             }
         }
 
@@ -145,8 +155,8 @@ void ImageDisplay::queryStatus()
         //imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
         
         
-        coor[2] = target_center.x * 4;
-        coor[3] = target_center.y * 4;
+        coor[2] = target_center.x;
+        coor[3] = target_center.y;
         emit emit_feedback(coor);
         emit emit_showFrame();
         emit emit_saveVideo();
@@ -358,5 +368,29 @@ void ImageDisplay::OnMouse(int event, int x, int y, int flags, void* param)
 
         (*(Ui::ImageDisplay * )param).Coordinate->setText(coorOutput);
     }
+}
+
+void ImageDisplay::saveTxtOn()
+{
+    saveTxtTimer->start();
+
+    time = QDateTime::currentDateTime();
+    str_time = time.toString("yyyy-MM-dd-hh-mm-ss");
+    path = "D:/Experiment/" + str_time + ".txt";
+
+    fout.open(path.toStdString()); //创建此对象后就新建了一个txt文件 只要通过<<向文件中写入数据即可
+    //fout << " ";
+}
+
+void ImageDisplay::saveTxtOff()
+{
+    saveTxtTimer->stop();
+    fout.close();
+}
+
+void ImageDisplay::slot_saveTxt()
+{
+    fout << coor[0] << ' ' << coor[1] << ' ' << coor[2] << ' ' << coor[3] << '\n';
+
 }
 

@@ -67,6 +67,9 @@
     <ClCompile Include="Debug_Helmholtz.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Control.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Settings.h">
@@ -79,6 +82,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImageProcessing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Control.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
