@@ -19,17 +19,34 @@ public:
 	Control();
 	~Control();
 
+
+	float* pidLocationControl(float* cur,float* tar);	//对四个轴的控制量进行解算并输出,数据格式与四极控制程序保存目标和当前位置格式相同
+	void resetControl();	//清零误差和控制量数组
+
 private:
 
 
 	float standardRad[4];	//平面四极中分别的弧度值
+
+
+	/*误差储存数组*/
 	float e[4] = { 0,0,0,0 };	//当前误差，四个值分别代表四个极方向上的误差
 	float e_1[4] = { 0,0,0,0 };	//上一步误差
 	float e_2[4] = { 0,0,0,0 };	//再上一步误差
 
-	float calcRadByCoor(float x, float y);	//根据坐标值计算出从原点到该坐标点的向量与x轴正方向夹角的弧度，值从0到2Π
+	/*pid控制变量*/
+	float kp = 0.0005;
+	float ki = 0;
+	float kd = 0;
+	float u[4] = {0,0,0,0};	//增量算法的控制量
+
+	float calcRadByCoor(float x, float y);	//根据坐标值计算出从原点到该坐标点的向量与x轴正方向夹角的弧度，值从0到2Π,x和y不能同时为0！
 
 	void calcError(float x, float y);	//根据当前位置与目标误差计算出四个方向上分别的误差值，覆写e[4]数组
 
+
+	float pid(float uk, float ek, float ek_1, float ek_2);	//增量式数字pid算法，输出增加Δu之后的u
+
+	
 };
 

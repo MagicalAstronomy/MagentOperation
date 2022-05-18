@@ -9,6 +9,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <cmath>
+#include "Control.h"
 
 
 
@@ -23,6 +24,7 @@ public:
 private:
 	Ui::Debug_Pole ui;
 	SerialPortCommunication* serialportcommunication;
+	Control* control;
 
 	QList<QSerialPortInfo> list;
 	QList<QSerialPortInfo> listCache;	//可用串口列表缓存
@@ -41,6 +43,8 @@ private:
 	float currentMag[2] = {0,0};	//当前磁珠位置，x和y存在数组中
 	float targetMag[2] = {0,0};	//目标磁珠位置,x和y存在数组中
 
+	bool flag_positionControl = false;	//是否进行位置闭环控制的标志位
+
 signals:
 	void emit_refreshsp();  //定时器刷新串口的信号函数
 	void emit_writeCurrent();
@@ -52,7 +56,10 @@ private slots:
 	void inputCurrent();
 	void slot_feedback(float*);	//得到图像窗口传递的磁珠中心点和目标点
 	void slot_writeCurrent();
+	void slot_writeCurrentNew();	//大四极设备使用这个输出
 	void startSpin();	//开始调试旋转磁场
 	void stopSpin();
 	void spinMagOutput();	//根据当前频率开始改变磁场方向并输出
+	void startPositionControl();	//开始位置闭环控制
+	void stopPositionControl();		//结束位置闭环控制
 };

@@ -6,6 +6,7 @@ Debug_Pole::Debug_Pole(QWidget *parent)
 {
 	ui.setupUi(this);
 	serialportcommunication = new SerialPortCommunication(this);
+	control = new Control();
 
 	spRefreshTimer = new QTimer(this);
 
@@ -34,7 +35,11 @@ Debug_Pole::Debug_Pole(QWidget *parent)
 	connect(ui.stopSpin, SIGNAL(clicked()), this, SLOT(stopSpin()));
 
 	/*输出电流使能*/
-	connect(this, SIGNAL(emit_writeCurrent()), this, SLOT(slot_writeCurrent()));
+	connect(this, SIGNAL(emit_writeCurrent()), this, SLOT(slot_writeCurrentNew()));
+
+	/*开始和结束位置闭环控制使能*/
+	connect(ui.startPositionControl, SIGNAL(clicked()), this, SLOT(startPositionControl()));
+	connect(ui.stopPositionControl, SIGNAL(clicked()), this, SLOT(stopPositionControl()));
 
 
 	currentValue = new float[4]();	//数组值初始化为0
@@ -186,6 +191,19 @@ void Debug_Pole::slot_feedback(float* coor)
 	targetMag[1] = coor[3];
 	//qDebug() << QString::number(currentMag[0], 'f', 2) << ',' << QString::number(currentMag[1], 'f', 2) << ',' << QString::number(targetMag[0], 'f', 2) << ',' << QString::number(targetMag[1], 'f', 2);
 
+
+	if (flag_positionControl)
+	{
+		float* temp;
+		temp = control->pidLocationControl(currentMag, targetMag);
+		for (int i = 0; i < 4; i++)
+		{
+			currentValue[i] = temp[i];
+		}
+		qDebug() << "当前磁珠坐标为：" << currentMag[0] << "," << currentMag[1] << "当前目标坐标为：" << targetMag[0] << "," << targetMag[1];
+		qDebug() << "当前四个轴控制量为：" << currentValue[0] << "," << currentValue[1] << "," << currentValue[2] << "," << currentValue[3];
+		emit emit_writeCurrent();
+	}
 }
 
 void Debug_Pole::slot_writeCurrent()
@@ -197,6 +215,17 @@ void Debug_Pole::slot_writeCurrent()
 	serialportcommunication->writeCurrent(currentValue[2], 0x05);	//修改后为西
 	serialportcommunication->writeCurrent( -1 * currentValue[3], 0x03);	//修改后为东
 	
+
+}
+
+void Debug_Pole::slot_writeCurrentNew()
+{
+	/*硬件接线上保证所有线圈在输入正向电流时,磁强计突起那边都显示为N，数组按顺序输出*/
+	serialportcommunication->writeCurrent(currentValue[0], 0x02);
+	serialportcommunication->writeCurrent(currentValue[1], 0x03);
+	serialportcommunication->writeCurrent(currentValue[2], 0x05);
+	serialportcommunication->writeCurrent(currentValue[3], 0x09);
+
 
 }
 
@@ -275,4 +304,16 @@ void Debug_Pole::spinMagOutput()
 	/*发送输出电流的信号*/
 	emit emit_writeCurrent();
 
+}
+
+
+void Debug_Pole::startPositionControl()
+{
+	flag_positionControl = true;
+}
+
+void Debug_Pole::stopPositionControl()
+{
+	flag_positionControl = false;
+	control->resetControl();
 }
