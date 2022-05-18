@@ -21,6 +21,11 @@ Debug_Pole::Debug_Pole(QWidget *parent)
 	spinMagTimer = new QTimer(this);
 	spinMagTimer->setInterval(spinControlCycle);
 	connect(spinMagTimer, SIGNAL(timeout()), this, SLOT(spinMagOutput()));
+
+	positionControlTimer = new QTimer(this);
+	positionControlTimer->setInterval(50);
+	connect(positionControlTimer, SIGNAL(timeout()), this, SLOT(positionControlOutput()));
+	positionControlTimer->start();
 	
 
 	
@@ -200,6 +205,24 @@ void Debug_Pole::slot_feedback(float* coor)
 	//qDebug() << QString::number(currentMag[0], 'f', 2) << ',' << QString::number(currentMag[1], 'f', 2) << ',' << QString::number(targetMag[0], 'f', 2) << ',' << QString::number(targetMag[1], 'f', 2);
 
 
+
+	/*先使用定时器，等和驱动器通信效率能达到帧速了再在这里直接控制*/
+	/*if (flag_positionControl)
+	{
+		float* temp;
+		temp = control->pidLocationControl(currentMag, targetMag);
+		for (int i = 0; i < 4; i++)
+		{
+			currentValue[i] = temp[i];
+		}
+		qDebug() << "当前磁珠坐标为：" << currentMag[0] << "," << currentMag[1] << "当前目标坐标为：" << targetMag[0] << "," << targetMag[1];
+		qDebug() << "当前四个轴控制量为：" << currentValue[0] << "," << currentValue[1] << "," << currentValue[2] << "," << currentValue[3];
+		emit emit_writeCurrent();
+	}*/
+}
+
+void Debug_Pole::positionControlOutput()
+{
 	if (flag_positionControl)
 	{
 		float* temp;
@@ -207,6 +230,7 @@ void Debug_Pole::slot_feedback(float* coor)
 		for (int i = 0; i < 4; i++)
 		{
 			currentValue[i] = temp[i];
+			
 		}
 		qDebug() << "当前磁珠坐标为：" << currentMag[0] << "," << currentMag[1] << "当前目标坐标为：" << targetMag[0] << "," << targetMag[1];
 		qDebug() << "当前四个轴控制量为：" << currentValue[0] << "," << currentValue[1] << "," << currentValue[2] << "," << currentValue[3];
@@ -344,6 +368,7 @@ void Debug_Pole::spinMagOutput()
 void Debug_Pole::startPositionControl()
 {
 	control->setParam(ui.setKP->text().toFloat(), ui.setKI->text().toFloat(), ui.setKD->text().toFloat());
+	
 	flag_positionControl = true;
 }
 
@@ -351,4 +376,11 @@ void Debug_Pole::stopPositionControl()
 {
 	flag_positionControl = false;
 	control->resetControl();
+
+	/*输出电流清零*/
+	for (int i = 0; i < 4; i++)
+	{
+		currentValue[i] = 0;
+	}
+	emit emit_writeCurrent();
 }

@@ -317,11 +317,11 @@ void ImageDisplay::drawTargetPoint()
 {
     if (ui.target_x->text().isEmpty() || ui.target_y->text().isEmpty())
     {
-        qDebug() << "请输入原图像大小下目标点坐标！";
+        qDebug() << "请输入目标点坐标！";
     }
     else
     {
-        target_center = cv::Point2f(ui.target_y->text().toFloat() / 4, ui.target_x->text().toFloat() / 4);
+        target_center = cv::Point2f(ui.target_y->text().toFloat(), ui.target_x->text().toFloat());
         flag_drawTarget = true;
     }
     

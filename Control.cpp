@@ -33,7 +33,7 @@ float Control::calcRadByCoor(float x, float y)
 
 void Control::calcError(float x, float y)
 {
-	if (x < 1e-4 && y < 1e-4)	//同时为0时 避免除零
+	if (abs(x) < 1e-4 && abs(y) < 1e-4)	//同时为0时 避免除零
 	{
 		e[0] = 0;
 		e[1] = 0;

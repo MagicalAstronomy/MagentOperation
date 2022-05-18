@@ -32,6 +32,8 @@ private:
 	QTimer* spRefreshTimer;	//刷新串口选择的定时器
 	QTimer* spinMagTimer;	//控制旋转磁场输出的定时器，定时器触发后改变方向
 
+	QTimer* positionControlTimer;	//闭环位置控制的驱动器，驱动器与上位机通信速率足够后考虑取消掉
+
 	float* currentValue;	//串口输入的电流值，4个通道分别以南-北-西-东储存在数组中
 
 	float spinFrequency;	//输入旋转磁场频率值
@@ -70,6 +72,7 @@ private slots:
 	void startPositionControl();	//开始位置闭环控制
 	void stopPositionControl();		//结束位置闭环控制
 
+	void positionControlOutput();	//使用定时器进行解算并输出给驱动器
 
 	void slot_writeCurrent02();
 	void slot_writeCurrent03();
