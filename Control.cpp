@@ -48,11 +48,14 @@ void Control::calcError(float x, float y)
 		double l = std::sqrt(x * x + y * y);
 		/*已知各标准方向角度和当前目标角度，可得到向量合成三角形的三个角，通过正弦定理即可求出两个方向误差值*/
 
-
+		
 		if (targetRad <= standardRad[0] && targetRad > standardRad[1])
 		{
 			e[2] = 0;
 			e[3] = 0;
+
+
+
 			float radToLL = targetRad - standardRad[1];		//左下角线圈产生磁场方向向量的对角 其他命名同此规律
 			float radToUL = standardRad[0] - targetRad;
 			float radToTarget = PI - radToLL - radToUL;
@@ -65,6 +68,10 @@ void Control::calcError(float x, float y)
 		{
 			e[0] = 0;
 			e[3] = 0;
+
+
+
+
 			float radToUL = targetRad - standardRad[2];
 			float radToUR = standardRad[1] - targetRad;
 			float radToTarget = PI - radToUL - radToUR;
@@ -75,6 +82,9 @@ void Control::calcError(float x, float y)
 		{
 			e[0] = 0;
 			e[1] = 0;
+
+
+
 			float radToUR = targetRad - standardRad[3];
 			float radToLR = standardRad[2] - targetRad;
 			float radToTarget = PI - radToLR - radToUR;
@@ -85,6 +95,9 @@ void Control::calcError(float x, float y)
 		{
 			e[1] = 0;
 			e[2] = 0;
+
+
+
 			if (targetRad > standardRad[0])
 			{
 				float radToLR = targetRad - standardRad[0];
@@ -114,6 +127,12 @@ float Control::pid(float uk, float ek, float ek_1, float ek_2)
 	return uk + deltaUk;
 }
 
+float Control::WeakenIntegralPID(float uk, float ek, float ek_1, float ek_2)
+{
+	float deltaUk = kp * (ek - ek_1) + kd * (ek - 2 * ek_1 + ek_2);
+	return uk + deltaUk;
+}
+
 void Control::resetControl()
 {
 	for (int i = 0; i < 4; i++)
@@ -137,10 +156,34 @@ float* Control::pidLocationControl(float* cur, float* tar)
 	//对四个轴分别使用pid控制
 	for (int i = 0; i < 4; i++)
 	{
-		u[i] = pid(u[i], e[i], e_1[i], e_2[i]);
+		/*由于是增量式，方向改变后要清除原方向的输出*/
+		if (e[i] == 0)
+		{
+			u[i] = 0;
+		}
+		//else if (abs(e[i]) > 10)	//使用遇限削弱积分
+		//{
+		//	u[i] = WeakenIntegralPID(u[i], e[i], e_1[i], e_2[i]);
+		//}
+		else    //使用正常pid
+		{
+			u[i] = pid(u[i], e[i], e_1[i], e_2[i]);
+		}
+		
+
+
+		/*设置饱和*/
+		if (u[i] > saturation)
+		{
+			u[i] = saturation;
+		}
+		else if (u[i] < -1 * saturation)
+		{
+			u[i] = -1 * saturation;
+		}
 	}
 
-	//TODO:饱和设置
+	
 	//TODO:死区设置
 
 	//更新误差
