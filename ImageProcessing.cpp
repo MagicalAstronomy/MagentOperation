@@ -20,7 +20,10 @@ void ImageProcessing::locateMagnet(cv::Mat img, cv::Point2f& center, float& radi
 	cv::Mat grey = cv::Mat::zeros(img.rows, img.cols, CV_8UC1);
 	cv::cvtColor(img, grey, cv::COLOR_RGB2GRAY);
 
-	cv::threshold(grey, grey, 0, 255, cv::THRESH_OTSU + cv::THRESH_BINARY_INV);
+	//cv::threshold(grey, grey, 0, 255, cv::THRESH_OTSU + cv::THRESH_BINARY_INV);
+	/*加入迷宫后，使用阈值区分微粒和迷宫*/
+	cv::threshold(grey, grey, 50, 255,cv::THRESH_BINARY_INV);
+
 	/*cv::imshow("大津", grey);
 	cv::waitKey(0);*/
 
@@ -93,4 +96,16 @@ void ImageProcessing::locateMagnet(cv::Mat img, cv::RotatedRect& mag)
 
 
 
+}
+
+cv::Mat ImageProcessing::AstarMapping(cv::Mat img)
+{
+	/*经过灰度化，二值化，闭运算，开运算。需要图中没有微机器人，否则分不清微机器人和障碍物*/
+	cv::cvtColor(img, img, cv::COLOR_RGB2GRAY);
+	cv::threshold(img, img, 0, 255, cv::THRESH_OTSU);
+	cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(4, 4));
+	cv::morphologyEx(img, img, cv::MORPH_CLOSE, element);
+	element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(20, 20));
+	cv::morphologyEx(img, img, cv::MORPH_OPEN, element);
+	return img;
 }

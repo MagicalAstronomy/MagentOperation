@@ -64,6 +64,12 @@ ImageDisplay::ImageDisplay(QWidget *parent)
     connect(ui.saveTxtOn, SIGNAL(clicked()), this, SLOT(saveTxtOn()));
     connect(ui.saveTxtOff, SIGNAL(clicked()), this, SLOT(saveTxtOff()));
 
+    //A*计算开始与更新预瞄点使能
+    connect(ui.AstarStart, SIGNAL(clicked()), this, SLOT(Astarstart()));
+    connect(this, SIGNAL(emit_getPreAiming()), this, SLOT(slot_getPreAiming()));
+
+
+
     //capture = cv::VideoCapture(0);
     //上下两种方式都可以打开摄像头
     
@@ -153,10 +159,27 @@ void ImageDisplay::queryStatus()
 
         //获得磁珠的中心和半径(缩小尺寸下)
         //imageprocessing->locateMagnet(frameShow, magent_center, magent_radius);
+
+
+        
+        if(!Astarflag)
+        {
+            coor[2] = target_center.x;
+            coor[3] = target_center.y;
+        }
+        else
+        {
+            /*由于Astar算法的X和Y是按图像坐标系的 X为往下，Y为往右，所以要反过来*/
+            coor[2] = preAiming->getY();
+            coor[3] = preAiming->getX();
+            if (sqrt((coor[0] - coor[2]) * (coor[0] - coor[2]) + (coor[1] - coor[3]) * (coor[1] - coor[3])) < 5)
+            {
+                /*距离足够近 需要更新预瞄点*/
+                emit emit_getPreAiming();
+            }
+        }
         
         
-        coor[2] = target_center.x;
-        coor[3] = target_center.y;
         emit emit_feedback(coor);
         emit emit_showFrame();
         emit emit_saveVideo();
@@ -219,6 +242,16 @@ void ImageDisplay::slot_showFrame()
             cv::circle(frameShow, target_center, 2, CV_RGB(0, 0, 255), -1);
         }
     }
+
+    /*A*算法画图*/
+    if (Astarflag) {
+        for (auto i : AstarPath)
+        {
+
+            cv::circle(frameShow, cv::Point(i->getY(), i->getX()), 1, (0, 0, 255), -1);
+        }
+    }
+    
 
     cv::imshow(winName, frameShow);
 
@@ -394,3 +427,18 @@ void ImageDisplay::slot_saveTxt()
 
 }
 
+void ImageDisplay::Astarstart()
+{
+    start = new Point(int(coor[1]), int(coor[0]));
+    end = new Point(int(coor[3]), int(coor[2]));
+    cv::Mat map = imageprocessing->AstarMapping(cv::imread("D:\\Experiment\\map.jpg"));
+    astar = new Astar(map, start, end, 0);
+    AstarPath = astar->findPath();
+    Astarflag = true;
+    emit emit_getPreAiming();
+}
+
+void ImageDisplay::slot_getPreAiming()
+{
+    preAiming = astar->findPreAimingPoint(20);
+}

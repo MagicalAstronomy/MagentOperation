@@ -384,6 +384,19 @@
     <string>停止保存</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="AstarStart">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>640</y>
+     <width>201</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>路径规划+循迹</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

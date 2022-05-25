@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Astar.cpp" />
     <ClCompile Include="Cam.cpp" />
     <ClCompile Include="Control.cpp" />
     <ClCompile Include="DahengDriver.cpp" />
@@ -112,6 +113,7 @@
     <QtMoc Include="ImageDisplay.h" />
     <QtMoc Include="Debug_Pole.h" />
     <QtMoc Include="SerialPortCommunication.h" />
+    <ClInclude Include="Astar.h" />
     <ClInclude Include="Cam.h" />
     <ClInclude Include="Control.h" />
     <ClInclude Include="DahengDriver.h" />

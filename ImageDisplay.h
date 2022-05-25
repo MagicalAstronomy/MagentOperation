@@ -12,6 +12,7 @@
 
 #include "Cam.h"
 #include "ImageProcessing.h"
+#include "Astar.h"
 
 #include <fstream>
 
@@ -75,6 +76,15 @@ private:
 	//鼠标所在位置点坐标，初始化为0
 	int mouse_x = 0, mouse_y = 0;
 
+
+	/*A算法参数*/
+	Point* start;
+	Point* end;
+	Astar* astar;
+	std::list<Point*> AstarPath;
+	Point* preAiming;
+	bool Astarflag = false;
+
 	static void OnMouse(int event, int x, int y, int flags, void* param);
 
 
@@ -82,6 +92,7 @@ signals:
 	void emit_showFrame();	//在程序中展示帧的信号
 	void emit_saveVideo();	//保存视频的信号
 	void emit_feedback(float*);	//得到的磁珠中点和目标点传递给控制子窗口
+	void emit_getPreAiming();	//触发得到下一个预瞄点
 
 //自定义槽函数
 private slots:
@@ -104,6 +115,8 @@ private slots:
 	void saveTxtOn();		//开始将当前位置和目标位置保存到txt
 	void saveTxtOff();		//停止将当前位置和目标位置保存到txt
 	void slot_saveTxt();	//保存txt槽函数
+	void Astarstart();		//使用A*算法进行路径规划，阶段性得到目标点
+	void slot_getPreAiming();	//当前点与目标点较近时触发，得到下一个预瞄点
 
 	
 
