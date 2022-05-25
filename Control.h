@@ -41,7 +41,8 @@ private:
 	float kd = 0;
 	float u[4] = {0,0,0,0};	//增量算法的控制量
 	float saturation = 3;	//控制量的饱和值
-	float limit = 10;	//遇限削弱积分的阈值为10，即10个像素以内开启ki
+	float limit = 10;	//遇限削弱积分的阈值为10，即10个像素以内开启ki 效果不好，暂时弃用
+	float deadzone = 0.001;	//在三个像素以内变为死区控制
 
 	float calcRadByCoor(float x, float y);	//根据坐标值计算出从原点到该坐标点的向量与x轴正方向夹角的弧度，值从0到2Π,x和y不能同时为0！
 
@@ -50,7 +51,7 @@ private:
 
 	float pid(float uk, float ek, float ek_1, float ek_2);	//增量式数字pid算法，输出增加Δu之后的u
 
-	float WeakenIntegralPID(float uk, float ek, float ek_1, float ek_2);	//遇限削弱积分，在距离较远时去掉ki部分
+	float WeakenIntegralPID(float uk, float ek, float ek_1, float ek_2);	//遇限削弱积分，在距离较远时去掉ki部分 效果不好，暂时弃用
 
 	
 };

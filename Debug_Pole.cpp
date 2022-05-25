@@ -293,18 +293,18 @@ void Debug_Pole::spinMagOutput()
 	float preRad;
 	float x, y, newx, newy;
 
-	/*全为0时 从北边开始*/
-	if ((currentValue[0] < 1e-4) && (currentValue[1] < 1e-4) && (currentValue[2] < 1e-4) && (currentValue[3] < 1e-4))
+	/*全为0时 从0x02开始*/
+	if ((abs(currentValue[0]) < 1e-4) && (abs(currentValue[1]) < 1e-4) && (abs(currentValue[2]) < 1e-4) && (abs(currentValue[3]) < 1e-4))
 	{
-		currentValue[1] = spinCurrent;
+		currentValue[0] = spinCurrent;
 	}
 	/*否则使用arctan判断当前方向，并增加指定角度后重新设定电流值*/
 	else
 	{
 
 		/*虽然左右/东西两边不完全相等，但旋转磁场开始时已经初始化过，能最大程度避免相对两边都有电流情况，直接相减就能得到方向*/
-		y = currentValue[1] - currentValue[0];	//纵坐标
-		x = currentValue[3] - currentValue[2];	//横坐标
+		y = currentValue[2] - currentValue[0];	//纵坐标
+		x = currentValue[3] - currentValue[1];	//横坐标
 
 		//qDebug() << "x:" << abs(x) << "y:" << y;
 		/*虽然浮点数有精度限制应该不会，但还是判断一下旋转到纵轴上的情况，避免arctan除零*/
@@ -335,26 +335,26 @@ void Debug_Pole::spinMagOutput()
 		if (newx > 0)
 		{
 			currentValue[3] = newx;
-			currentValue[2] = 0;
+			currentValue[1] = 0;
 		}
 		else
 		{
-			currentValue[2] = abs(newx);
+			currentValue[1] = abs(newx);
 			currentValue[3] = 0;
 		}
 		if (newy > 0)
 		{
-			currentValue[1] = newy;
+			currentValue[2] = newy;
 			currentValue[0] = 0;
 		}
 		else
 		{
 			currentValue[0] = abs(newy);
-			currentValue[1] = 0;
+			currentValue[2] = 0;
 		}
-		qDebug() << "当前北侧电流：" << currentValue[1];
+		qDebug() << "当前北侧电流：" << currentValue[2];
 		qDebug() << "当前南侧电流：" << currentValue[0];
-		qDebug() << "当前西侧电流：" << currentValue[2];
+		qDebug() << "当前西侧电流：" << currentValue[1];
 		qDebug() << "当前东侧电流：" << currentValue[3];
 		qDebug() << "*******";
 

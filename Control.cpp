@@ -150,6 +150,32 @@ float* Control::pidLocationControl(float* cur, float* tar)
 	float diff_x = tar[0] - cur[0];
 	float diff_y = tar[1] - cur[1];
 
+
+	if(abs(diff_x) < deadzone && abs(diff_y) < deadzone)	//开启死区
+	{
+		float min = 1000;
+		for (int i = 0; i < 4; i++)
+		{
+			if (u[i] == 0)
+			{
+				continue;
+			}
+			else if (u[i] < min)
+			{
+				min = u[i];
+			}
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			if (u[i] == 0)
+			{
+				continue;
+			}
+			u[i] = u[i] / (min / 0.02);
+		}
+		return u;
+	}
+
 	//得到四个轴上的误差值
 	calcError(diff_x, diff_y);
 
